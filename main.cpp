@@ -121,7 +121,7 @@ void LeerComando(char comando[]){
             token = strtok(NULL, delimitador);
         }
         actual->imprimir();
-
+        actual->makedisk();
     }
 }
 

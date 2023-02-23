@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <dirent.h>
+#include "estructuras.cpp"
 using namespace std;
 
 
@@ -53,16 +54,8 @@ void mkdisk::makedisk(){
         cout<<"ERROR en creacion de disco \n"<<path;
     }
     fclose(disco);
-
     disco=fopen(path.c_str(),"ab");
-    /*mbr actual;
-    actual.mbr_tamanio=tamanio;
-    time_t now;
-    now = time(NULL);
-
-    actual.mbr_fecha_creacion=now;
-    actual.mbr_dsk_asignature=rand()%1000;
-    fwrite(&actual,sizeof(actual),1,disco);*/
+    fseek(disco, 0, SEEK_SET);
     if (disco==NULL){
     exit(1);
     }
@@ -83,6 +76,16 @@ void mkdisk::makedisk(){
         fwrite(&Pesokilo, sizeof(Pesokilo), 1, disco);
     }
     fclose(disco);
+    disco=fopen(path.c_str(),"ab");
+    fseek(disco, 0, SEEK_SET);
+    Mbr actual;
+    actual.mbr_tamano=tamanio;
+    time_t now;
+    now = time(NULL);
+
+    actual.mbr_fecha_creacion=now;
+    actual.mbr_signature=rand()%1000;
+    fwrite(&actual,sizeof(actual),1,disco);
 }
 
 #endif
