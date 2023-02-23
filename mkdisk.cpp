@@ -2,6 +2,7 @@
 #define MKDISK_H
 
 #include <iostream>
+#include <dirent.h>
 using namespace std;
 
 
@@ -14,9 +15,10 @@ public:
     string fit;
 
     char unidad ;
+
+    void carpetas(string);
     void makedisk();
     void imprimir();
-
 };
 
 mkdisk::mkdisk(){
@@ -24,8 +26,15 @@ mkdisk::mkdisk(){
     this->fit="FF";
 }
 
+void mkdisk::carpetas(string ruta){
+   
+    string consol ="mkdir -p \""+ruta+"\"";
+    string limpiar ="rm -r \""+ruta+"\"";
+    system(consol.c_str());
+    system(limpiar.c_str());
+}
+
 void mkdisk::imprimir(){
-    cout<<"entro"<<endl;
     cout << "path: " << this->ruta << endl;
     cout << "size: " << this->tamanio << endl;
     cout << "unit: " << this->unidad << endl;
@@ -35,6 +44,7 @@ void mkdisk::imprimir(){
 
 void mkdisk::makedisk(){
     string path = this->ruta;
+    this->carpetas(path);
     cout<<"Creando disco en: \n"<<path<<endl;
     FILE *disco;
     disco=fopen(path.c_str(),"wb");

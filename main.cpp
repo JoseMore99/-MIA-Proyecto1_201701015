@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <vector>
 #include <string.h>
-#include <dirent.h>
 #include "mkdisk.cpp"
 
 using namespace std;
