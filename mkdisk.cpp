@@ -15,7 +15,7 @@ public:
 
     char unidad ;
     void makedisk();
-    void mk();
+    void imprimir();
 
 };
 
@@ -24,7 +24,7 @@ mkdisk::mkdisk(){
     this->fit="FF";
 }
 
-void mkdisk::mk(){
+void mkdisk::imprimir(){
     cout<<"entro"<<endl;
     cout << "path: " << this->ruta << endl;
     cout << "size: " << this->tamanio << endl;

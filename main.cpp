@@ -8,7 +8,16 @@
 
 using namespace std;
 
+struct info
+{
+   string nombre;
+   string valor;
+};
+
 void LeerComando(char []);
+
+string rutaAux;
+
 
 void execute(string ruta){
     ifstream ejecutable;
@@ -23,34 +32,62 @@ void execute(string ruta){
     }
 }
 
-string ObtenerNombre(string parametro){
-    string vec;
-    string nombre = "";
-    for(int i = 0; i < parametro.length(); i++){
-        if(parametro.at(i) == '=') break;
-        char caracter = parametro.at(i);
-        nombre = nombre + caracter;
+string Obtenerstring(string comando){
+    string nuevo="";
+    rutaAux="";
+    bool cambiar = false;
+    for(int i = 0; i < comando.length(); i++){
+        char caracter = comando.at(i);
+        if(comando.at(i) == '"'){
+            if (cambiar){
+                nuevo = nuevo +"$";
+                cambiar = false;
+                continue;
+            }
+            cambiar = true;
+            continue;
+        } 
+        if(!cambiar){
+            nuevo = nuevo + caracter;
+        }else{
+            rutaAux +=caracter;
+        }
+        
     }
-    return nombre;
+    cout<<nuevo<<endl;
+    cout<<rutaAux<<endl;
+    return nuevo;
 }
 
-string ObtenerValor(string parametro){
+info ObtenerValor(string parametro){
+    string nombre="";
     string valor = "";
+    info retorno;
     bool concatenar = false;
+    
     for(int i = 0; i < parametro.length(); i++){
+        char caracter = parametro.at(i);
+        if(parametro.at(i) == '=') {
+            concatenar = true;
+            continue;}
         if(concatenar){
-            char caracter = parametro.at(i);
             valor = valor + caracter;
+        }else{
+            nombre = nombre + caracter;
         }
-        if(parametro.at(i) == '=') {concatenar = true;}
     }
-    return valor;
+    retorno.nombre = nombre;
+    retorno.valor = valor;
+    return retorno;
 }
 
 void LeerComando(char comando[]){
+    string str = Obtenerstring(comando);
     char delimitador[] = " ";
     string vec;
-    char * token = strtok(comando,delimitador);
+    char aux[str.length()+1];
+    strcpy(aux, str.c_str());
+    char * token = strtok(aux,delimitador);
     if(token != NULL){
             vec=token;
     }
@@ -58,11 +95,10 @@ void LeerComando(char comando[]){
     if (vec=="execute"){
         token = strtok(NULL, delimitador);
         string aux = token;
-        string compo[2];
-        compo[1]=ObtenerValor(aux);
-        compo[0]=ObtenerNombre(aux);
-        if(compo[0]==">path"){
-            execute(compo[1]);
+        info compo = ObtenerValor(aux);
+        if(compo.nombre==">path"){
+            if(compo.valor=="$")compo.valor=rutaAux;
+            execute(compo.valor);
         }
     }
     else if (vec=="mkdisk"){
@@ -71,22 +107,21 @@ void LeerComando(char comando[]){
         while (token != NULL){
 
             string aux = token;
-            string compo[2];
-            compo[1]=ObtenerValor(aux);
-            compo[0]=ObtenerNombre(aux);
-            if(compo[0]==">path"){
-                actual->ruta = compo[1];
-            }else  if(compo[0]==">size"){
-                actual->tamanio = stoi(compo[1]);
-            }else  if(compo[0]==">unit"){
-                actual->unidad = compo[1][0];
-            }else  if(compo[0]==">fit"){
-                actual->fit = compo[1];
+            info compo = ObtenerValor(aux);
+            if(compo.nombre==">path"){
+                 if(compo.valor=="$")compo.valor=rutaAux;
+
+                actual->ruta = compo.valor;
+            }else  if(compo.nombre==">size"){
+                actual->tamanio = stoi(compo.valor);
+            }else  if(compo.nombre==">unit"){
+                actual->unidad = compo.valor[0];
+            }else  if(compo.nombre==">fit"){
+                actual->fit = compo.valor;
             }
             token = strtok(NULL, delimitador);
         }
-
-        //actual->mk();
+        actual->imprimir();
 
     }
 }
