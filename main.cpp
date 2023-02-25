@@ -4,6 +4,7 @@
 #include <vector>
 #include <string.h>
 #include "mkdisk.cpp"
+#include "rmdisk.cpp"
 
 using namespace std;
 
@@ -99,6 +100,16 @@ void LeerComando(char comando[]){
             if(compo.valor=="$")compo.valor=rutaAux;
             execute(compo.valor);
         }
+    }else if (vec=="rmdisk"){
+        token = strtok(NULL, delimitador);
+        string aux = token;
+        rmdisk *actual=new rmdisk();
+        info compo = ObtenerValor(aux);
+        if(compo.nombre==">path"){
+            if(compo.valor=="$")compo.valor=rutaAux;
+            actual->ruta=compo.valor;
+        }
+        actual->removedisk();
     }
     else if (vec=="mkdisk"){
         mkdisk *actual=new mkdisk();
@@ -120,7 +131,7 @@ void LeerComando(char comando[]){
             }
             token = strtok(NULL, delimitador);
         }
-        actual->imprimir();
+        //actual->imprimir();
         actual->makedisk();
     }
 }

@@ -1,5 +1,5 @@
-#ifndef MKDISK_H
-#define MKDISK_H
+#ifndef FDISK_H
+#define FDISK_H
 
 #include <iostream>
 #include <dirent.h>
@@ -7,35 +7,35 @@
 using namespace std;
 
 
-class mkdisk
+class fdisk
 {
 public:
-    mkdisk();
+    fdisk();
     int tamanio;
     string ruta;
-    string fit;
-
+    string name;
     char unidad ;
+    char type;
+    string fit;
+    string borrar;
+    int add;
 
-    void carpetas(string);
-    void makedisk();
+
+    void makeFdisk();
     void imprimir();
 };
 
-mkdisk::mkdisk(){
-    this->unidad='M';
-    this->fit="FF";
+fdisk::fdisk(){
+    this->unidad='K';
+    this->type='P';
+    this->fit="WF";
+    this->add=0;
+    this->borrar="";
 }
 
-void mkdisk::carpetas(string ruta){
-   
-    string consol ="mkdir -p \""+ruta+"\"";
-    string limpiar ="rm -r \""+ruta+"\"";
-    system(consol.c_str());
-    system(limpiar.c_str());
-}
 
-void mkdisk::imprimir(){
+
+void fdisk::imprimir(){
     cout << "path: " << this->ruta << endl;
     cout << "size: " << this->tamanio << endl;
     cout << "unit: " << this->unidad << endl;
@@ -43,9 +43,8 @@ void mkdisk::imprimir(){
 
 }
 
-void mkdisk::makedisk(){
+void fdisk::makeFdisk(){
     string path = this->ruta;
-    this->carpetas(path);
     cout<<"Creando disco en: "<<path<<endl;
     FILE *disco;
     disco=fopen(path.c_str(),"wb");
