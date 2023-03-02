@@ -4,6 +4,8 @@
 #include <vector>
 #include <string.h>
 #include "mkdisk.cpp"
+#include "./fdisk/fdisk.h"
+#include "./rep/rep.h"
 #include "rmdisk.cpp"
 
 using namespace std;
@@ -54,8 +56,8 @@ string Obtenerstring(string comando){
         }
         
     }
-    cout<<nuevo<<endl;
-    cout<<rutaAux<<endl;
+    //cout<<nuevo<<endl;
+    //cout<<rutaAux<<endl;
     return nuevo;
 }
 
@@ -133,6 +135,66 @@ void LeerComando(char comando[]){
         }
         //actual->imprimir();
         actual->makedisk();
+    }else if (vec=="fdisk"){
+        fdisk *actual=new fdisk();
+        token = strtok(NULL, delimitador);
+        while (token != NULL){
+
+            string aux = token;
+            info compo = ObtenerValor(aux);
+            if(compo.nombre==">path"){
+                 if(compo.valor=="$")compo.valor=rutaAux;
+
+                actual->ruta = compo.valor;
+            }else  if(compo.nombre==">size"){
+                actual->tamanio = stoi(compo.valor);
+            }else  if(compo.nombre==">unit"){
+                actual->unidad = compo.valor[0];
+            }else  if(compo.nombre==">fit"){
+                actual->fit = compo.valor;
+            }else  if(compo.nombre==">name"){
+                actual->name = compo.valor;
+            }else  if(compo.nombre==">type"){
+                actual->type = compo.valor[0];
+            }else  if(compo.nombre==">delete"){
+                actual->borrar = compo.valor;
+            }else  if(compo.nombre==">add"){
+                actual->add = stoi(compo.valor);
+            }
+            token = strtok(NULL, delimitador);
+        }
+        //actual->imprimir();
+        if(actual->type=='P'){
+            actual->makePrimaria();
+        }else if (actual->type=='E'){
+            actual->makeExtendida();
+        }else if(actual->type=='L'){
+            actual->makeLogica();
+        }else{
+            cout<<"ERROR: Tipo de Particion desconocida!"<<endl;
+        }
+    }else if (vec=="rep"){
+        rep *actual=new rep();
+        token = strtok(NULL, delimitador);
+        while (token != NULL){
+
+            string aux = token;
+            info compo = ObtenerValor(aux);
+            if(compo.nombre==">path"){
+                 if(compo.valor=="$")compo.valor=rutaAux;
+
+                actual->ruta = compo.valor;
+            }else  if(compo.nombre==">name"){
+                actual->name = compo.valor;
+            }else  if(compo.nombre==">ruta"){
+                actual->ruta = compo.valor;
+            }else  if(compo.nombre==">id"){
+                actual->id = compo.valor;
+            }
+            token = strtok(NULL, delimitador);
+        }
+        //actual->imprimir();
+        actual->makerep();
     }
 }
 

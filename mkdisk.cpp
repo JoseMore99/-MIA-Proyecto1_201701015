@@ -76,16 +76,24 @@ void mkdisk::makedisk(){
         fwrite(&Pesokilo, sizeof(Pesokilo), 1, disco);
     }
     fclose(disco);
-    disco=fopen(path.c_str(),"ab");
+    disco=fopen(path.c_str(),"rb+");
     fseek(disco, 0, SEEK_SET);
     Mbr actual;
-    actual.mbr_tamano=tamanio;
+    actual.mbr_tamano=tam*1024;
     time_t now;
     now = time(NULL);
-
+    actual.dsk_fit=this->fit[0];
     actual.mbr_fecha_creacion=now;
     actual.mbr_signature=rand()%1000;
+    string vaciar="";
+    for (int i = 0; i < 4; i++)
+    {
+       actual.mbr_partition[i].part_s=-1; 
+        strcpy(actual.mbr_partition[i].part_name,vaciar.c_str());
+    }
+
     fwrite(&actual,sizeof(actual),1,disco);
+    fclose(disco);
 }
 
 #endif

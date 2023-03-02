@@ -1,0 +1,5 @@
+c++ \
+    main.cpp \
+    ./fdisk/fdisk.cpp \
+    ./rep/rep.cpp \
+-o run
