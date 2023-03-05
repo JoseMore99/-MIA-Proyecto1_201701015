@@ -7,3 +7,5 @@ fdisk >type=E >path="./mis discos/Disco3.dsk" >unit=K >size=2 >name=Particion4
 fdisk >path="./mis discos/Disco3.dsk" >unit=K >type=P >name=Particion3 >size=1
 fdisk >name=Particion3 >delete=full >path="./mis discos/Disco3.dsk"
 fdisk >size=1 >type=L >unit=K >fit=BF >path="./mis discos/Disco3.dsk" >name=Parti5
+mount >name=Particion1 >path="./mis discos/Disco3.dsk" 
+rep >id=151Disco3 >path=./reporte1.jpg >name=mbr

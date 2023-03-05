@@ -6,6 +6,7 @@
 #include "mkdisk.cpp"
 #include "./fdisk/fdisk.h"
 #include "./rep/rep.h"
+#include "./mount/mount.h"
 #include "rmdisk.cpp"
 
 using namespace std;
@@ -19,7 +20,7 @@ struct info
 void LeerComando(char []);
 
 string rutaAux;
-
+vector<mount> montados;
 
 void execute(string ruta){
     ifstream ejecutable;
@@ -59,6 +60,25 @@ string Obtenerstring(string comando){
     //cout<<nuevo<<endl;
     //cout<<rutaAux<<endl;
     return nuevo;
+}
+
+string ObtenerNombre(string ruta){
+    string retorno="";
+    //cout<<ruta<<endl;
+    bool valor= false;
+    for(int i = 0; i < ruta.length(); i++){
+        char caracter = ruta.at(i);
+        if(ruta.at(i) == '/') {
+            retorno = "";
+            valor=true;
+            continue;
+        }else if(ruta.at(i) == '.' && valor) {
+            break;
+        }
+        retorno = retorno + caracter;
+
+    }
+    return retorno;
 }
 
 info ObtenerValor(string parametro){
@@ -173,6 +193,37 @@ void LeerComando(char comando[]){
         }else{
             cout<<"ERROR: Tipo de Particion desconocida!"<<endl;
         }
+    }else if (vec=="mount"){
+        mount *actual=new mount();
+        token = strtok(NULL, delimitador);
+        while (token != NULL){
+
+            string aux = token;
+            info compo = ObtenerValor(aux);
+            if(compo.nombre==">path"){
+                 if(compo.valor=="$")compo.valor=rutaAux;
+
+                actual->path = compo.valor;
+            }else  if(compo.nombre==">name"){
+                actual->name = compo.valor;
+            }
+            token = strtok(NULL, delimitador);
+        }
+        //actual->imprimir();
+        //actual->makerep();
+        int numero=actual->numeroParticion();
+        if(numero!=-1){
+            numero++;
+            //201701015
+            actual->id="15"+to_string(numero)+ObtenerNombre(actual->path);
+            montados.push_back(*actual);
+             for (mount item : montados) {
+                cout << item.id << endl;
+            }
+        }else{
+            cout<<"La particion que se quiere montar no existe"<<endl;
+        }
+        
     }else if (vec=="rep"){
         rep *actual=new rep();
         token = strtok(NULL, delimitador);
@@ -183,7 +234,7 @@ void LeerComando(char comando[]){
             if(compo.nombre==">path"){
                  if(compo.valor=="$")compo.valor=rutaAux;
 
-                actual->ruta = compo.valor;
+                actual->path = compo.valor;
             }else  if(compo.nombre==">name"){
                 actual->name = compo.valor;
             }else  if(compo.nombre==">ruta"){
@@ -194,7 +245,13 @@ void LeerComando(char comando[]){
             token = strtok(NULL, delimitador);
         }
         //actual->imprimir();
-        actual->makerep();
+        for (mount item : montados) {
+                if(item.id==actual->id){
+                    actual->makerep(item.path);
+                    break;
+                }
+                
+        }
     }
 }
 

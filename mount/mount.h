@@ -1,23 +1,22 @@
-#ifndef REP_H
-#define REP_H
+#ifndef MOUNT_H
+#define MOUNT_H
 
 #include <iostream>
 #include <dirent.h>
+
 using namespace std;
 
 
-class rep
+class mount
 {
 public:
-    rep();
+    mount();
     string id;
-    string ruta;
     string path;
     string name;
-
-void makerep(string localizar);
-
+    int numeroParticion();
 };
+
 
 
 #endif

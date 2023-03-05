@@ -65,10 +65,10 @@ void mkdisk::makedisk(){
         Pesokilo[j]=0;
     }
     int tam ;
-    if(tolower(this->unidad)=='k'){
+    if(this->unidad=='K'){
     tam = tamanio;
     }
-    else if(tolower(this->unidad)=='m'){
+    else if(this->unidad=='M'){
     tam = 1024* tamanio;
     }
 
@@ -92,7 +92,7 @@ void mkdisk::makedisk(){
         strcpy(actual.mbr_partition[i].part_name,vaciar.c_str());
     }
 
-    fwrite(&actual,sizeof(actual),1,disco);
+    fwrite(&actual,sizeof(Mbr),1,disco);
     fclose(disco);
 }
 
