@@ -15,7 +15,7 @@ public:
     string path;
     string name;
 
-void makerep(string localizar);
+void makerep(string localizar,string parti);
 
 };
 

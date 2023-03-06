@@ -3,4 +3,5 @@ c++ \
     ./fdisk/fdisk.cpp \
     ./rep/rep.cpp \
     ./mount/mount.cpp \
+    ./mkfs/mkfs.cpp \
 -o run

@@ -46,7 +46,7 @@ struct SuperB
    int s_magic;
    int s_inode_s;
    int s_block_s;
-   int s_firts_ino;
+   int s_first_ino;
    int s_first_blo;
    int s_bm_inode_start;
    int s_bm_block_start;
@@ -62,7 +62,7 @@ struct TablaI
    time_t i_atime;
    time_t i_ctime;
    time_t i_mtime;
-   int i_block;
+   int i_block[15];
    char i_type;
    int i_perm;
 };
@@ -79,5 +79,13 @@ struct BloqueCarpetas
    content b_content [4];
 };
 
+struct BloqueArchivos
+{
+   char b_content [64];
+};
+struct BloqueApuntadores
+{
+   int b_content [16];
+};
 
 

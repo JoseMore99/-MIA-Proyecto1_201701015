@@ -7,6 +7,7 @@
 #include "./fdisk/fdisk.h"
 #include "./rep/rep.h"
 #include "./mount/mount.h"
+#include "./mkfs/mkfs.h"
 #include "rmdisk.cpp"
 
 using namespace std;
@@ -209,21 +210,49 @@ void LeerComando(char comando[]){
             }
             token = strtok(NULL, delimitador);
         }
-        //actual->imprimir();
-        //actual->makerep();
         int numero=actual->numeroParticion();
         if(numero!=-1){
             numero++;
             //201701015
-            actual->id="15"+to_string(numero)+ObtenerNombre(actual->path);
+            actual->id="15"+to_string(montados.size())+ObtenerNombre(actual->path);
             montados.push_back(*actual);
              for (mount item : montados) {
-                cout << item.id << endl;
+                cout <<"id:"<< item.id << endl;
+                cout <<"name:"<< item.name << endl;
             }
         }else{
             cout<<"La particion que se quiere montar no existe"<<endl;
         }
         
+    }else if (vec=="mkfs"){
+        mkfs *actual=new mkfs();
+        token = strtok(NULL, delimitador);
+        while (token != NULL){
+            string aux = token;
+            info compo = ObtenerValor(aux);
+            if(compo.nombre==">id"){
+                actual->id = compo.valor;
+            }else  if(compo.nombre==">type"){
+                actual->type = compo.valor;
+            }else  if(compo.nombre==">fs"){
+                actual->fs = compo.valor;
+            }
+            token = strtok(NULL, delimitador);
+        }
+        bool error = true;
+        for (mount item : montados) {
+            cout<<item.id<<endl;
+            cout<<actual->id<<endl;
+                if(item.id==actual->id){
+                     actual->makefs(item);
+                     error = false;
+                     break;
+                }
+        }
+        if(error){
+            cout<<"Particion no montada o inexistente!"<<endl;
+        }
+       
     }else if (vec=="rep"){
         rep *actual=new rep();
         token = strtok(NULL, delimitador);
@@ -247,7 +276,7 @@ void LeerComando(char comando[]){
         //actual->imprimir();
         for (mount item : montados) {
                 if(item.id==actual->id){
-                    actual->makerep(item.path);
+                    actual->makerep(item.path,item.name);
                     break;
                 }
                 
