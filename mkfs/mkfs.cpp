@@ -73,19 +73,25 @@ void mkfs::makefs(mount montado){
         raiz.i_gid = 1;
         raiz.i_s = sizeof(BloqueCarpetas);
         raiz.i_ctime= now2;
+        raiz.i_atime= now2;
         raiz.i_mtime= now2;
         for (int i = 0; i < 15; i++)
         {
             raiz.i_block[i]=-1;
         }
         raiz.i_type='0';
-        raiz.i_perm='W';
+        raiz.i_perm=664;
         raiz.i_block[0]=bloque.s_first_blo;
         fseek(disco, bloque.s_inode_start, SEEK_SET);
         fwrite(&raiz,sizeof(TablaI),1,disco);
         
         BloqueCarpetas origen;
         string contenido = "users.txt";
+        string Actual=".";
+        string Anterior="..";
+        
+        strcpy(origen.b_content[0].b_name,Actual.c_str());
+        strcpy(origen.b_content[1].b_name,Anterior.c_str());
         strcpy(origen.b_content[2].b_name,contenido.c_str());
         origen.b_content[2].b_inodo=bloque.s_first_ino;
         fseek(disco, bloque.s_block_start, SEEK_SET);
@@ -97,14 +103,16 @@ void mkfs::makefs(mount montado){
         users.i_uid=1;
         users.i_gid = 1;
         users.i_s = sizeof(BloqueCarpetas);
+        now2 = time(NULL);
         users.i_ctime= now2;
+        users.i_atime= now2;
         users.i_mtime= now2;
         for (int i = 0; i < 15; i++)
         {
             users.i_block[i]=-1;
         }
         users.i_type='1';
-        users.i_perm='W';
+        users.i_perm=664;
         users.i_block[0]=bloque.s_first_blo;
         fseek(disco, bloque.s_first_ino, SEEK_SET);
         fwrite(&users,sizeof(TablaI),1,disco);

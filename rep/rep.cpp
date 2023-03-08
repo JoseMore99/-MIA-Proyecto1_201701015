@@ -346,5 +346,231 @@ void rep::makerep(string localizar,string parti){
         cout<<cmd<<endl;
         system(cmd.c_str());
         cout<<"Reporte de Super Bloque creado"<<endl;
+    }else if(this->name=="inode"){
+        ofstream archi;
+        archi.open("Reportin.dot",ios::out);
+        if(archi.fail()){
+        cout<<"Ocurrio un error inesperado"<<endl;
+        return;
         }
+        FILE *disco;
+        disco=fopen(localizar.c_str(),"rb+");
+        if(disco==NULL)
+            exit(1);
+        Mbr aux;
+        fread(&aux,sizeof(Mbr),1,disco);
+        archi<<"digraph G {\n label=\"";
+        archi<<this->path;
+        archi<<"\""<<endl;
+        int contador = 0;
+        archi<<"node [shape=box fillcolor=\"aquamarine\" style=\"filled\"]"<<endl;
+        Partition esesta= BuscarPar(aux.mbr_partition,parti);
+        cout<<"aquie inicia "<<esesta.part_start<<endl;
+        
+        fseek(disco, esesta.part_start, SEEK_SET);
+        SuperB reporte;
+        fread(&reporte,sizeof(SuperB),1,disco);
+        int pos = reporte.s_inode_start;
+        TablaI raiz;
+        while(contador<reporte.s_inodes_count){
+            fseek(disco, pos, SEEK_SET);
+            fread(&raiz,sizeof(TablaI),1,disco);
+            archi<<"node"+to_string(contador)+"[label=\"";
+            archi<<"inodo "<<contador<<"\\n";
+            archi<<"i_uid:"<<raiz.i_uid<<"\\n";
+            archi<<"i_s:"<<raiz.i_s<<"\\n";
+            archi<<"i_atime:"<<ctime(&raiz.i_atime);
+            archi<<"i_ctime:"<<ctime(&raiz.i_ctime);
+            archi<<"i_mtime:"<<ctime(&raiz.i_mtime);
+            for (int i = 0; i < 15; i++){
+                archi<<"i_block["<<i<<"]:"<<raiz.i_block[i]<<"\\n";
+            }
+            
+            archi<<"i_type:"<<raiz.i_type<<"\\n";
+            archi<<"i_perm:"<<raiz.i_perm;
+            archi<<"\"];"<<endl;
+            contador++;
+            pos += sizeof(TablaI);
+        }
+        
+       
+        archi<<"rank=same{";
+        for (int i = 0; i < contador-1; i++)
+        {
+            archi<<"node";
+            archi<<i;
+            archi<<"->";
+        }
+        archi<<"node";
+        archi<<contador-1;
+        archi<<"}"<<endl;
+        archi<<"}"<<endl;
+
+        archi.close();
+        string cmd = "dot -Tjpg ./Reportin.dot -o "+this->path;
+        cout<<cmd<<endl;
+        system(cmd.c_str());
+        cout<<"Reporte de inodos creado"<<endl;
+    }else if(this->name=="block"){
+        ofstream archi;
+        archi.open("Reportblo.dot",ios::out);
+        if(archi.fail()){
+        cout<<"Ocurrio un error inesperado"<<endl;
+        return;
+        }
+        FILE *disco;
+        disco=fopen(localizar.c_str(),"rb+");
+        if(disco==NULL)
+            exit(1);
+        Mbr aux;
+        fread(&aux,sizeof(Mbr),1,disco);
+        archi<<"digraph G {\n label=\"";
+        archi<<this->path;
+        archi<<"\""<<endl;
+        int contador = 0;
+        archi<<"node [shape=box fillcolor=\"burlywood1\" style=\"filled\"]"<<endl;
+        Partition esesta= BuscarPar(aux.mbr_partition,parti);
+        cout<<"aquie inicia "<<esesta.part_start<<endl;
+        
+        fseek(disco, esesta.part_start, SEEK_SET);
+        SuperB reporte;
+        fread(&reporte,sizeof(SuperB),1,disco);
+        int pos = reporte.s_block_start;
+        BloqueCarpetas raiz;
+        BloqueArchivos doc;
+
+        while(contador<reporte.s_inodes_count){
+            fseek(disco, pos, SEEK_SET);
+            fread(&raiz,sizeof(BloqueCarpetas),1,disco);
+            //cout<<raiz.b_content[0].b_name<<" jsjs\n";
+            if(raiz.b_content[0].b_name[0]=='.'){
+                 archi<<"node"+to_string(contador)+"[label=\"";
+                archi<<"bloque Carpeta "<<contador<<"\\n";
+                for (int i = 0; i < 4; i++)
+                {
+                   archi<<raiz.b_content[i].b_name<<"--"<<raiz.b_content[i].b_inodo<<"\\n";
+                }
+                
+                archi<<"\"];"<<endl;
+                contador++;
+                pos += sizeof(BloqueCarpetas);
+            }else{
+                fseek(disco, pos, SEEK_SET);
+                fread(&doc,sizeof(BloqueArchivos),1,disco);
+                archi<<"node"+to_string(contador)+"[label=\"";
+                archi<<"bloque Archivo "<<contador<<"\\n";
+                archi<<doc.b_content<<"\\n";
+                archi<<"\"];"<<endl;
+                contador++;
+                pos += sizeof(BloqueCarpetas);
+            }
+           
+        }
+        
+       
+        archi<<"rank=same{";
+        for (int i = 0; i < contador-1; i++)
+        {
+            archi<<"node";
+            archi<<i;
+            archi<<"->";
+        }
+        archi<<"node";
+        archi<<contador-1;
+        archi<<"}"<<endl;
+        archi<<"}"<<endl;
+
+        archi.close();
+        string cmd = "dot -Tjpg ./Reportblo.dot -o "+this->path;
+        cout<<cmd<<endl;
+        system(cmd.c_str());
+        cout<<"Reporte de bloques creado"<<endl;
+    }else if(this->name=="bm_inode"){
+        ofstream archi;
+        archi.open(this->path,ios::out);
+        if(archi.fail()){
+        cout<<"Ocurrio un error inesperado"<<endl;
+        return;
+        }
+        FILE *disco;
+        disco=fopen(localizar.c_str(),"rb+");
+        if(disco==NULL)
+            exit(1);
+        Mbr aux;
+        fread(&aux,sizeof(Mbr),1,disco);
+        int contador = 0;
+        Partition esesta= BuscarPar(aux.mbr_partition,parti);
+        fseek(disco, esesta.part_start, SEEK_SET);
+        SuperB reporte;
+        fread(&reporte,sizeof(SuperB),1,disco);
+        int pos = reporte.s_bm_inode_start;
+        int fin = reporte.s_bm_block_start;
+        char valor;
+        int saltos=1;
+        cout<<pos<<endl;
+        cout<<fin<<endl;
+        while(pos<fin){
+            if(saltos ==20){
+                archi<<"\n";
+                saltos=1;
+            }
+            fseek(disco, pos, SEEK_SET);
+            fread(&valor,sizeof(char),1,disco);
+            if(valor==0){
+                archi<<'0';
+            }else{
+                archi<<'1';
+            }
+            pos++;
+            saltos++;
+        }
+        
+       
+        archi.close();
+        cout<<"Reporte de bitmap de inodos creado"<<endl;
+    }else if(this->name=="bm_bloc"){
+        ofstream archi;
+        archi.open(this->path,ios::out);
+        if(archi.fail()){
+        cout<<"Ocurrio un error inesperado"<<endl;
+        return;
+        }
+        FILE *disco;
+        disco=fopen(localizar.c_str(),"rb+");
+        if(disco==NULL)
+            exit(1);
+        Mbr aux;
+        fread(&aux,sizeof(Mbr),1,disco);
+        int contador = 0;
+        Partition esesta= BuscarPar(aux.mbr_partition,parti);
+        fseek(disco, esesta.part_start, SEEK_SET);
+        SuperB reporte;
+        fread(&reporte,sizeof(SuperB),1,disco);
+        int pos = reporte.s_bm_block_start;
+        int fin = reporte.s_inode_start;
+        char valor;
+        int saltos=1;
+        cout<<pos<<endl;
+        cout<<fin<<endl;
+        while(pos<fin){
+            if(saltos ==20){
+                archi<<"\n";
+                saltos=1;
+            }
+            fseek(disco, pos, SEEK_SET);
+            fread(&valor,sizeof(char),1,disco);
+            if(valor==0){
+                archi<<'0';
+            }else{
+                archi<<'1';
+            }
+            pos++;
+            saltos++;
+        }
+        
+       
+        archi.close();
+        cout<<"Reporte de bitmap de inodos creado"<<endl;
+    }
+
 }

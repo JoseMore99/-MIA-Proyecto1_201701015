@@ -12,3 +12,7 @@ rep >id=150Disco3 >path=./reporte1.jpg >name=mbr
 rep >id=150Disco3 >path=./reporte2.jpg >name=disk
 mkfs >type=full >id=150Disco3
 rep >id=150Disco3 >path=./reporte3.jpg >name=sb
+rep >id=150Disco3 >path=./reporte4.jpg >name=inode
+rep >id=150Disco3 >path=./reporte5.jpg >name=block
+rep >id=150Disco3 >path=./reporte6.txt >name=bm_inode
+rep >id=150Disco3 >path=./reporte7.txt >name=bm_bloc
