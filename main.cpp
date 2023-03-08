@@ -8,6 +8,7 @@
 #include "./rep/rep.h"
 #include "./mount/mount.h"
 #include "./mkfs/mkfs.h"
+#include "./login/login.h"
 #include "rmdisk.cpp"
 
 using namespace std;
@@ -21,6 +22,7 @@ struct info
 void LeerComando(char []);
 
 string rutaAux;
+login *logeado;
 vector<mount> montados;
 
 void execute(string ruta){
@@ -281,6 +283,45 @@ void LeerComando(char comando[]){
                 }
                 
         }
+    }else if(vec=="login"){
+        login *actual=new login();
+        token = strtok(NULL, delimitador);
+        while (token != NULL){
+            string aux = token;
+            info compo = ObtenerValor(aux);
+            if(compo.nombre==">user"){
+                actual->user = compo.valor;
+            }else  if(compo.nombre==">pass"){
+                actual->pass = compo.valor;
+            }else  if(compo.nombre==">id"){
+                actual->id = compo.valor;
+            }
+            token = strtok(NULL, delimitador);
+        }
+        bool error = true;
+        for (mount item : montados) {
+            cout<<item.id<<endl;
+            cout<<actual->id<<endl;
+                if(item.id==actual->id){
+                    if(actual->user=="root"&&actual->pass=="123"){
+                        logeado=actual;
+                        cout<<"Bienvenido "<<actual->user<<endl;
+                    }else{
+                        cout<<"usuario o contrasenia incorrectos!!!"<<endl;
+                    }
+                    error = false;
+                    break;
+                }
+        }
+        if(error){
+            cout<<"Particion no montada o inexistente!"<<endl;
+        }
+
+    }else if(vec=="pause"){
+        cout<<"Presione enter para continuar...";
+        cin.get();
+        cin.get();
+        cout<<"Programa reanudado\n";
     }
 }
 

@@ -62,9 +62,11 @@ void mkfs::makefs(mount montado){
         bloque.s_free_inodes_count-=2;
         fseek(disco, bloque.s_bm_inode_start, SEEK_SET);
         char unidad =1;
-        fwrite(&unidad,1,2,disco);
+        fwrite(&unidad,sizeof(char),1,disco);
+        fwrite(&unidad,sizeof(char),1,disco);
         fseek(disco, bloque.s_bm_block_start, SEEK_SET);
-        fwrite(&unidad,1,2,disco);
+        fwrite(&unidad,sizeof(char),1,disco);
+        fwrite(&unidad,sizeof(char),1,disco);
 
         time_t now2;
         now2 = time(NULL);

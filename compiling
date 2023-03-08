@@ -4,4 +4,5 @@ c++ \
     ./rep/rep.cpp \
     ./mount/mount.cpp \
     ./mkfs/mkfs.cpp \
+    ./login/login.cpp \
 -o run

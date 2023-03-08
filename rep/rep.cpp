@@ -516,6 +516,7 @@ void rep::makerep(string localizar,string parti){
             }
             fseek(disco, pos, SEEK_SET);
             fread(&valor,sizeof(char),1,disco);
+            cout<<int(valor)<<endl;
             if(valor==0){
                 archi<<'0';
             }else{
