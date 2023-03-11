@@ -1,0 +1,29 @@
+digraph G {
+ label="./reporte4.jpg"
+node [shape=box fillcolor="aquamarine" style="filled"]
+node0[label="inodo 0\ni_uid:1\ni_s:64\ni_atime:Sat Mar 11 00:10:55 2023
+i_ctime:Sat Mar 11 00:10:55 2023
+i_mtime:Sat Mar 11 00:10:55 2023
+i_block[0]:0\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
+node1[label="inodo 1\ni_uid:1\ni_s:64\ni_atime:Sat Mar 11 00:10:55 2023
+i_ctime:Sat Mar 11 00:10:55 2023
+i_mtime:Sat Mar 11 00:10:55 2023
+i_block[0]:1\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:1\ni_perm:664"];
+node2[label="inodo 2\ni_uid:1\ni_s:64\ni_atime:Sat Mar 11 00:10:55 2023
+i_ctime:Sat Mar 11 00:10:55 2023
+i_mtime:Sat Mar 11 00:10:55 2023
+i_block[0]:3\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
+node3[label="inodo 3\ni_uid:1\ni_s:64\ni_atime:Sat Mar 11 00:10:55 2023
+i_ctime:Sat Mar 11 00:10:55 2023
+i_mtime:Sat Mar 11 00:10:55 2023
+i_block[0]:5\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
+node4[label="inodo 4\ni_uid:1\ni_s:64\ni_atime:Sat Mar 11 00:10:55 2023
+i_ctime:Sat Mar 11 00:10:55 2023
+i_mtime:Sat Mar 11 00:10:55 2023
+i_block[0]:7\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
+node5[label="inodo 5\ni_uid:1\ni_s:64\ni_atime:Sat Mar 11 00:10:55 2023
+i_ctime:Sat Mar 11 00:10:55 2023
+i_mtime:Sat Mar 11 00:10:55 2023
+i_block[0]:9\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:1\ni_perm:664"];
+rank=same{node0->node1->node2->node3->node4->node5}
+}

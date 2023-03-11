@@ -7,5 +7,7 @@ using namespace std;
 
 
 login::login(){
-    
+    this->id="";
+    this->pass="";
+    this->user="";
 }

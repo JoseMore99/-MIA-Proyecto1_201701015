@@ -9,6 +9,7 @@
 #include "./mount/mount.h"
 #include "./mkfs/mkfs.h"
 #include "./login/login.h"
+#include "./mkfile/mkfile.h"
 #include "rmdisk.cpp"
 
 using namespace std;
@@ -22,7 +23,9 @@ struct info
 void LeerComando(char []);
 
 string rutaAux;
-login *logeado;
+login *logeado= new login();
+
+
 vector<mount> montados;
 
 void execute(string ruta){
@@ -300,8 +303,6 @@ void LeerComando(char comando[]){
         }
         bool error = true;
         for (mount item : montados) {
-            cout<<item.id<<endl;
-            cout<<actual->id<<endl;
                 if(item.id==actual->id){
                     if(actual->user=="root"&&actual->pass=="123"){
                         logeado=actual;
@@ -317,6 +318,40 @@ void LeerComando(char comando[]){
             cout<<"Particion no montada o inexistente!"<<endl;
         }
 
+    }else if(vec=="mkfile"){
+        mkfile *actual=new mkfile();
+        token = strtok(NULL, delimitador);
+        while (token != NULL){
+            string aux = token;
+            info compo = ObtenerValor(aux);
+            if(compo.nombre==">path"){
+                if(compo.valor=="$")compo.valor=rutaAux;
+                actual->path=compo.valor;
+            }else  if(compo.nombre==">r"){
+                actual->r =true;
+            }else  if(compo.nombre==">size"){
+                actual->size = stoi(compo.valor);
+            }else if(compo.nombre==">cont"){
+                if(compo.valor=="$")compo.valor=rutaAux;
+                actual->cont=compo.valor;
+            }
+            token = strtok(NULL, delimitador);
+        }
+        if(logeado->id==""){
+            cout<<"Error: No hay usuario logeado, Realizar login"<<endl;
+        }else{
+            bool error = true;
+            for (mount item : montados) {
+                    if(item.id==logeado->id){
+                        actual->makefile(item);
+                        error = false;
+                        break;
+                    }
+            }
+            if(error){
+                cout<<"Particion no montada o inexistente!"<<endl;
+            }
+        }
     }else if(vec=="pause"){
         cout<<"Presione enter para continuar...";
         cin.get();
@@ -327,6 +362,15 @@ void LeerComando(char comando[]){
 
 int main()
 {
+    /*
+    char aux[]="/jiji/jaja.com";
+    char delimitador[] = "/";
+    char * token = strtok(aux,delimitador);
+    while(token!=NULL){
+        cout<<"<"<<token<<endl;
+        token = strtok(NULL,delimitador);
+    }
+    */
     char rEx[400];
     bool bucle = true;
     cout<<"Proyecto 1-201701015"<<endl;

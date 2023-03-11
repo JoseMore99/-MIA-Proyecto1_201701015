@@ -1,0 +1,16 @@
+digraph G {
+ subgraph cluster1 {fillcolor="blue" label="./reporte2.jpg" fontcolor="white" style="filled"
+node [shape=box fillcolor="yellow" style="filled"]
+node0[label="Mbr"];
+node1[label="Primaria\n42% del disco"];
+node2[label="Extendida\n28%del disco"];
+subgraph cluster2 {fillcolor="cyan" label="Logicas"style="filled"
+node [shape=box fillcolor="green" style="filled" ]
+nodel0[label="Ebr"];
+nodel1[label="Logica\n14% del disco"];
+rank=same{nodel0->nodel1}
+};
+rank=same{node0->node1->node2}
+node2->nodel0
+}
+}

@@ -49,8 +49,8 @@ void mkfs::makefs(mount montado){
         bloque.s_magic=0xEF53;
         bloque.s_inode_s=sizeof(TablaI);
         bloque.s_block_s=sizeof(BloqueArchivos);
-        bloque.s_first_ino=bul.part_start+sizeof(SuperB)+n+3*n;
-        bloque.s_first_blo=bul.part_start+sizeof(SuperB)+n+3*n+n*sizeof(TablaI);
+        bloque.s_first_ino=0;
+        bloque.s_first_blo=0;
         bloque.s_bm_inode_start=bul.part_start+sizeof(SuperB);
         bloque.s_bm_block_start=bul.part_start+sizeof(SuperB)+n;
         bloque.s_inode_start=bul.part_start+sizeof(SuperB)+n+3*n;
@@ -86,20 +86,22 @@ void mkfs::makefs(mount montado){
         raiz.i_block[0]=bloque.s_first_blo;
         fseek(disco, bloque.s_inode_start, SEEK_SET);
         fwrite(&raiz,sizeof(TablaI),1,disco);
-        
+        bloque.s_first_ino++;
+
         BloqueCarpetas origen;
         string contenido = "users.txt";
         string Actual=".";
         string Anterior="..";
+        string libre="";
         
         strcpy(origen.b_content[0].b_name,Actual.c_str());
         strcpy(origen.b_content[1].b_name,Anterior.c_str());
         strcpy(origen.b_content[2].b_name,contenido.c_str());
+        strcpy(origen.b_content[3].b_name,libre.c_str());
         origen.b_content[2].b_inodo=bloque.s_first_ino;
         fseek(disco, bloque.s_block_start, SEEK_SET);
         fwrite(&origen,sizeof(BloqueCarpetas),1,disco);
-        bloque.s_first_blo+=sizeof(BloqueCarpetas);
-        bloque.s_first_ino+=sizeof(TablaI);
+        bloque.s_first_blo++;
        
         TablaI users;
         users.i_uid=1;
@@ -116,17 +118,20 @@ void mkfs::makefs(mount montado){
         users.i_type='1';
         users.i_perm=664;
         users.i_block[0]=bloque.s_first_blo;
-        fseek(disco, bloque.s_first_ino, SEEK_SET);
+        int pos= bloque.s_inode_start+(bloque.s_first_ino*sizeof(TablaI));
+        fseek(disco, pos, SEEK_SET);
         fwrite(&users,sizeof(TablaI),1,disco);
-        bloque.s_first_ino+=sizeof(TablaI);
+        bloque.s_first_ino++;
         
         BloqueArchivos usuarios;
         contenido = "1, G, root\n1,U, root, root, 123\n";
         strcpy(usuarios.b_content,contenido.c_str());
-        fseek(disco, bloque.s_first_blo, SEEK_SET);
+        pos= bloque.s_block_start+(bloque.s_first_blo*sizeof(BloqueArchivos));
+
+        fseek(disco, pos, SEEK_SET);
         fwrite(&usuarios,sizeof(BloqueArchivos),1,disco);
         
-        bloque.s_first_blo+=sizeof(BloqueArchivos);
+        bloque.s_first_blo++;
 
         fseek(disco, bul.part_start, SEEK_SET);
         fwrite(&bloque,sizeof(SuperB),1,disco);

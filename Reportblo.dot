@@ -1,0 +1,13 @@
+digraph G {
+ label="./reporte5.jpg"
+node [shape=box fillcolor="burlywood1" style="filled"]
+node0[label="bloque Carpeta 0\n.--0\n..--48\nusers.txt--1\n--119\n"];
+node1[label="bloque Archivo 1\n1, G, root
+1,U, root, root, 123
+\n"];
+node2[label="bloque Carpeta 2\n.--0\n..--32727\nhome--2\n--32766\n"];
+node3[label="bloque Carpeta 3\n.--0\n..--32727\n--0\n--22027\n"];
+node4[label="bloque Carpeta 4\n.--0\n..--0\nuser--3\n---1\n"];
+node5[label="bloque Carpeta 5\n.--0\n..--32727\n--0\n--22027\n"];
+rank=same{node0->node1->node2->node3->node4->node5}
+}

@@ -5,4 +5,5 @@ c++ \
     ./mount/mount.cpp \
     ./mkfs/mkfs.cpp \
     ./login/login.cpp \
+    ./mkfile/mkfile.cpp \
 -o run

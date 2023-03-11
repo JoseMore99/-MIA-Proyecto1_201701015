@@ -1,7 +1,6 @@
-mkdisk >size=5 >unit=M >path="./mis discos/Disco1.dsk"
-mkdisk >size=10 >path="/home/mis discos/Disco4.dsk"
-mkdisk >unit=K >path="./mis discos/Disco3.dsk" >size=7 
+
 rmdisk >path="./mis discos/Disco3.dsk"
+mkdisk >unit=K >path="./mis discos/Disco3.dsk" >size=7 
 fdisk >type=P >path="./mis discos/Disco3.dsk" >unit=K >name=Particion1 >size=3
 fdisk >type=E >path="./mis discos/Disco3.dsk" >unit=K >size=2 >name=Particion4
 fdisk >path="./mis discos/Disco3.dsk" >unit=K >type=P >name=Particion3 >size=1
@@ -17,3 +16,4 @@ rep >id=150Disco3 >path=./reporte5.jpg >name=block
 rep >id=150Disco3 >path=./reporte6.txt >name=bm_inode
 rep >id=150Disco3 >path=./reporte7.txt >name=bm_bloc
 login >user=root >pass=123 >id=150Disco3
+mkfile >size=15 >path=/home/user/docs/a.txt >r
