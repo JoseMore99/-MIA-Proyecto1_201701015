@@ -36,7 +36,7 @@ int ExisteCarArch(FILE *disco,TablaI raiz,char *token,SuperB reporte){
             BloqueCarpetas carp;
             int pos = reporte.s_block_start+(raiz.i_block[i]*sizeof(BloqueArchivos));
             fseek(disco, pos, SEEK_SET);
-            fread(&raiz,sizeof(BloqueCarpetas),1,disco);
+            fread(&carp,sizeof(BloqueCarpetas),1,disco);
             if(carp.b_content[0].b_name[0]=='.'){//Es carpeta
                 for (int j = 1; j < 4; j++)
                 {
@@ -64,15 +64,18 @@ bool EsCarpeta( string valor){
 int PosInodo(FILE *disco,TablaI raiz,SuperB reporte){
     int retorno = -1;
     for (int i = 0; i < 15; i++){
+        //cout<<raiz.i_block[i]<<endl;
         if(raiz.i_block[i]!=-1){
             BloqueCarpetas carp;
             int pos = reporte.s_block_start+(raiz.i_block[i]*sizeof(BloqueArchivos));
             fseek(disco, pos, SEEK_SET);
-            fread(&raiz,sizeof(BloqueCarpetas),1,disco);
+            fread(&carp,sizeof(BloqueCarpetas),1,disco);
             if(carp.b_content[0].b_name[0]=='.'){//Es carpeta
                 for (int j = 1; j < 4; j++)
                 {
-                    if(carp.b_content[j].b_name==""){
+                    cout<<j<<"."<<carp.b_content[j].b_name<<endl;
+                    if(strcmp(carp.b_content[j].b_name,"")==0){
+                        cout<<"entro :o"<<endl;
                         return i;
                     }
                 }
@@ -94,11 +97,11 @@ int PosBloque(FILE *disco,TablaI raiz,SuperB reporte){
             BloqueCarpetas carp;
             int pos = reporte.s_block_start+(raiz.i_block[i]*sizeof(BloqueArchivos));
             fseek(disco, pos, SEEK_SET);
-            fread(&raiz,sizeof(BloqueCarpetas),1,disco);
+            fread(&carp,sizeof(BloqueCarpetas),1,disco);
             if(carp.b_content[0].b_name[0]=='.'){//Es carpeta
                 for (int j = 1; j < 4; j++)
                 {
-                   if(carp.b_content[j].b_name==""){
+                   if(strcmp(carp.b_content[j].b_name,"")==0){
                         return j;
                     }
                 }
@@ -142,11 +145,15 @@ void mkfile::makefile(mount montado){
         fseek(disco, pos, SEEK_SET);
         fread(&raiz,sizeof(TablaI),1,disco);
         //Existe la Carpeta o archivo?
+        
         int comprobar = ExisteCarArch(disco,raiz,token,reporte);
+        cout<<token<<endl;
         if(comprobar==-1){//no existe
             //buscamos pocision en el bloque y de no haberla creamos un bloque 
             int inodoActual=PosInodo(disco,raiz,reporte);// Posicion del inodo al apuntador bloue bloque
             int bloqueActual=PosBloque(disco,raiz,reporte);//pocision del bloque con espacio libre
+            //cout<<inodoActual<<endl;
+           // cout<<bloqueActual<<endl;
             string contenido=token;
             if(bloqueActual==-1){//si no hay un bloque disponible, se crea
                 BloqueCarpetas extender;
@@ -155,9 +162,13 @@ void mkfile::makefile(mount montado){
                 string libre="";
                 
                 strcpy(extender.b_content[0].b_name,Actual.c_str());
+                extender.b_content[0].b_inodo=0;
                 strcpy(extender.b_content[1].b_name,Anterior.c_str());
+                extender.b_content[1].b_inodo=0;
                 strcpy(extender.b_content[2].b_name,contenido.c_str());
+                extender.b_content[2].b_inodo=0;
                 strcpy(extender.b_content[3].b_name,libre.c_str());
+                extender.b_content[3].b_inodo=0;
                 pos= reporte.s_block_start+(reporte.s_first_blo*sizeof(BloqueArchivos));
                 extender.b_content[2].b_inodo=reporte.s_first_ino;
                 fseek(disco, pos, SEEK_SET);
@@ -212,9 +223,13 @@ void mkfile::makefile(mount montado){
                 string libre="";
                 
                 strcpy(nuevoBC.b_content[0].b_name,Actual.c_str());
+                nuevoBC.b_content[0].b_inodo=0;
                 strcpy(nuevoBC.b_content[1].b_name,Anterior.c_str());
+                nuevoBC.b_content[1].b_inodo=0;
                 strcpy(nuevoBC.b_content[2].b_name,libre.c_str());
+                nuevoBC.b_content[2].b_inodo=0;
                 strcpy(nuevoBC.b_content[3].b_name,libre.c_str());
+                nuevoBC.b_content[3].b_inodo=0;
                 int postemp= reporte.s_block_start+(reporte.s_first_blo*sizeof(BloqueArchivos));
                 fseek(disco, postemp, SEEK_SET);
                 fwrite(&nuevoBC,sizeof(BloqueArchivos),1,disco);
@@ -278,6 +293,7 @@ void mkfile::makefile(mount montado){
     }
     fseek(disco, bul.part_start, SEEK_SET);
     cout<<reporte.s_inodes_count<<endl;
+    cout<<reporte.s_blocks_count<<endl;
     fwrite(&reporte,sizeof(SuperB),1,disco);
     fclose(disco);
 }

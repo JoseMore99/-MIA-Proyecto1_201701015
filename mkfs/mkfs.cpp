@@ -95,9 +95,12 @@ void mkfs::makefs(mount montado){
         string libre="";
         
         strcpy(origen.b_content[0].b_name,Actual.c_str());
+        origen.b_content[0].b_inodo=0;
         strcpy(origen.b_content[1].b_name,Anterior.c_str());
+        origen.b_content[1].b_inodo=0;
         strcpy(origen.b_content[2].b_name,contenido.c_str());
         strcpy(origen.b_content[3].b_name,libre.c_str());
+        origen.b_content[3].b_inodo=0;
         origen.b_content[2].b_inodo=bloque.s_first_ino;
         fseek(disco, bloque.s_block_start, SEEK_SET);
         fwrite(&origen,sizeof(BloqueCarpetas),1,disco);

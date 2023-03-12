@@ -7,6 +7,44 @@
 
 using namespace std;
 
+string bloques;
+
+string ObtenerBloque(int inicio,int numero,FILE *disco,char type){
+    string archi="";
+    string apuntadores="";
+    int postemp= inicio+(numero*sizeof(BloqueArchivos));
+    BloqueCarpetas aux2;
+    fseek(disco, inicio, SEEK_SET);
+    fread(&aux2,sizeof(BloqueArchivos),1,disco);
+    //cout<<aux2.b_content[2].b_name<<endl;
+    if(type=='0'){
+        BloqueCarpetas aux;
+        fseek(disco, postemp, SEEK_SET);
+        fread(&aux,sizeof(BloqueArchivos),1,disco);
+        archi=archi+"nodeB"+to_string(numero)+"[label=\"";
+        archi=archi+"bloque Carpeta "+to_string(numero)+"\\n";
+        for (int i = 0; i < 4; i++)
+        {
+            archi=archi+aux.b_content[i].b_name+"--"+to_string(aux.b_content[i].b_inodo)+"\\n";
+            if(aux.b_content[i].b_inodo!=0){
+                apuntadores=apuntadores+"nodeB"+to_string(numero)+"-> nodeI"+to_string(aux.b_content[i].b_inodo)+";\n";
+            }
+        }
+        
+        archi=archi+"\"];\n";
+    }else if(type=='1'){
+        BloqueArchivos aux;
+        fseek(disco, postemp, SEEK_SET);
+        fread(&aux,sizeof(BloqueArchivos),1,disco);
+        archi=archi+"nodeB"+to_string(numero)+"[label=\"";
+        archi=archi+"bloque Archivo "+to_string(numero)+"\\n";
+        archi=archi+aux.b_content+"\\n";
+        archi=archi+"\"];\n";
+    }
+    archi = archi+apuntadores;
+    return archi;
+}
+
 Partition BuscarPar(Partition lista [], string nombe){
    Partition aux;
     for (int i = 0; i < 4; i++){
@@ -479,7 +517,7 @@ void rep::makerep(string localizar,string parti){
         archi<<contador-1;
         archi<<"}"<<endl;
         archi<<"}"<<endl;
-
+        fclose(disco);
         archi.close();
         string cmd = "dot -Tjpg ./Reportblo.dot -o "+this->path;
         cout<<cmd<<endl;
@@ -572,6 +610,70 @@ void rep::makerep(string localizar,string parti){
        
         archi.close();
         cout<<"Reporte de bitmap de inodos creado"<<endl;
+    }else if(this->name=="tree"){
+        ofstream archi;
+        archi.open("Reportree.dot",ios::out);
+        if(archi.fail()){
+        cout<<"Ocurrio un error inesperado"<<endl;
+        return;
+        }
+        FILE *disco;
+        disco=fopen(localizar.c_str(),"rb+");
+        if(disco==NULL)
+            exit(1);
+        Mbr aux;
+        fread(&aux,sizeof(Mbr),1,disco);
+        archi<<"digraph G {\n label=\"";
+        archi<<this->path;
+        archi<<"\""<<endl;
+        int contador = 0;
+        archi<<"node [shape=box fillcolor=\"aquamarine\" style=\"filled\"]"<<endl;
+        Partition esesta= BuscarPar(aux.mbr_partition,parti);
+        
+        fseek(disco, esesta.part_start, SEEK_SET);
+        SuperB reporte;
+        fread(&reporte,sizeof(SuperB),1,disco);
+        int pos = reporte.s_inode_start;
+        
+        TablaI raiz;
+        while(contador<reporte.s_inodes_count){
+            bloques ="";
+            fseek(disco, pos, SEEK_SET);
+            fread(&raiz,sizeof(TablaI),1,disco);
+            archi<<"nodeI"+to_string(contador)+"[label=\"";
+            archi<<"inodo "+to_string(contador)+"\\n";
+            archi<<"i_uid:"<<raiz.i_uid<<"\\n";
+            archi<<"i_s:"<<raiz.i_s<<"\\n";
+            archi<<"i_atime:"<<ctime(&raiz.i_atime);
+            archi<<"i_ctime:"<<ctime(&raiz.i_ctime);
+            archi<<"i_mtime:"<<ctime(&raiz.i_mtime);
+            for (int i = 0; i < 15; i++){
+                archi<<"i_block["<<i<<"]:"<<raiz.i_block[i]<<"\\n";
+            }
+            
+            archi<<"i_type:"<<raiz.i_type<<"\\n";
+            archi<<"i_perm:"<<raiz.i_perm;
+            archi<<"\"];"<<endl;
+
+            for (int i = 0; i < 15; i++){
+                if(raiz.i_block[i]!=-1){
+                    archi<<"nodeI"+to_string(contador)+"-> nodeB"+to_string(raiz.i_block[i])<<endl;
+                    bloques = bloques + ObtenerBloque(reporte.s_block_start,raiz.i_block[i],disco,raiz.i_type);
+                }
+            }
+            archi<<bloques<<endl;
+
+            contador++;
+            pos += sizeof(TablaI);
+        }
+        
+        archi<<"}"<<endl;
+        fclose(disco);
+        archi.close();
+        string cmd = "dot -Tjpg ./Reportree.dot -o "+this->path;
+        cout<<cmd<<endl;
+        system(cmd.c_str());
+        cout<<"Reporte de inodos creado"<<endl;
     }
 
 }

@@ -12,8 +12,9 @@ rep >id=150Disco3 >path=./reporte2.jpg >name=disk
 mkfs >type=full >id=150Disco3
 rep >id=150Disco3 >path=./reporte3.jpg >name=sb
 rep >id=150Disco3 >path=./reporte4.jpg >name=inode
-rep >id=150Disco3 >path=./reporte5.jpg >name=block
 rep >id=150Disco3 >path=./reporte6.txt >name=bm_inode
 rep >id=150Disco3 >path=./reporte7.txt >name=bm_bloc
 login >user=root >pass=123 >id=150Disco3
-mkfile >size=15 >path=/home/user/docs/a.txt >r
+mkfile >size=15 >path=/home/user/docs/a.txt >r 
+rep >id=150Disco3 >path=./reporte5.jpg >name=block
+rep >id=150Disco3 >path=./reporte8.jpg >name=tree
