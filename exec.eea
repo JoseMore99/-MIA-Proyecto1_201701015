@@ -1,7 +1,7 @@
 
 rmdisk >path="./mis discos/Disco3.dsk"
-mkdisk >unit=K >path="./mis discos/Disco3.dsk" >size=7 
-fdisk >type=P >path="./mis discos/Disco3.dsk" >unit=K >name=Particion1 >size=3
+mkdisk >unit=M >path="./mis discos/Disco3.dsk" >size=7 
+fdisk >type=P >path="./mis discos/Disco3.dsk" >unit=M >name=Particion1 >size=3
 fdisk >type=E >path="./mis discos/Disco3.dsk" >unit=K >size=2 >name=Particion4
 fdisk >path="./mis discos/Disco3.dsk" >unit=K >type=P >name=Particion3 >size=1
 fdisk >name=Particion3 >delete=full >path="./mis discos/Disco3.dsk"
@@ -10,11 +10,14 @@ mount >name=Particion1 >path="./mis discos/Disco3.dsk"
 rep >id=150Disco3 >path=./reporte1.jpg >name=mbr
 rep >id=150Disco3 >path=./reporte2.jpg >name=disk
 mkfs >type=full >id=150Disco3
+login >user=root >pass=123 >id=150Disco3
+mkfile >size=15 >path=/home/user/docs/a1.txt >r 
+mkfile >size=15 >path=/home/user2/a2.txt >r 
+mkfile >size=15 >path=/home3/a3.txt >r 
+mkfile >size=15 >path=/home2/a4.txt  
 rep >id=150Disco3 >path=./reporte3.jpg >name=sb
 rep >id=150Disco3 >path=./reporte4.jpg >name=inode
 rep >id=150Disco3 >path=./reporte6.txt >name=bm_inode
 rep >id=150Disco3 >path=./reporte7.txt >name=bm_bloc
-login >user=root >pass=123 >id=150Disco3
-mkfile >size=15 >path=/home/user/docs/a.txt >r 
 rep >id=150Disco3 >path=./reporte5.jpg >name=block
 rep >id=150Disco3 >path=./reporte8.jpg >name=tree

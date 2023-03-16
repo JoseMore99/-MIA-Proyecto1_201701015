@@ -25,7 +25,7 @@ string ObtenerBloque(int inicio,int numero,FILE *disco,char type){
         archi=archi+"bloque Carpeta "+to_string(numero)+"\\n";
         for (int i = 0; i < 4; i++)
         {
-            archi=archi+aux.b_content[i].b_name+"--"+to_string(aux.b_content[i].b_inodo)+"\\n";
+            archi=archi+aux.b_content[i].b_name+" : "+to_string(aux.b_content[i].b_inodo)+"\\n";
             if(aux.b_content[i].b_inodo!=0){
                 apuntadores=apuntadores+"nodeB"+to_string(numero)+"-> nodeI"+to_string(aux.b_content[i].b_inodo)+";\n";
             }
@@ -199,9 +199,21 @@ void rep::makerep(string localizar,string parti){
         archi<<"\"];"<<endl;
         contador++;
         double porcentaje=0;
+        int espacio = sizeof(Mbr);
+        int auxpos=0;
         for (int i = 0; i < 4; i++){
            if(aux.mbr_partition[i].part_name[0]!='\0'){
+                auxpos=i;
                 archi<<"node"+to_string(contador)+"[label=\"";
+                if(aux.mbr_partition[i].part_start!=espacio){
+                    archi<<"node"+to_string(contador)+"[label=\"";
+                    porcentaje = ((aux.mbr_partition[i].part_start-espacio)*100/aux.mbr_tamano);
+                    archi<<"Libre\\n";
+                    archi<<porcentaje;
+                    archi<<"%";
+                    archi<<" del disco\"];"<<endl;
+                    contador++;
+                }
                 if (aux.mbr_partition[i].part_type=='P')
                 {
                     porcentaje = (aux.mbr_partition[i].part_s*100/aux.mbr_tamano);
@@ -236,10 +248,31 @@ void rep::makerep(string localizar,string parti){
                         archi<<" del disco\"];"<<endl;
                         contadorL++;
                         if(auxiliar.part_next!=-1){
+                            int espaciol=auxiliar.part_start+auxiliar.part_s;
+                            if(auxiliar.part_next!=espaciol){
+                                archi<<"nodel"+to_string(contadorL)+"[label=\"";
+                                porcentaje = ((auxiliar.part_next-espacio)*100/aux.mbr_tamano);
+                                archi<<"Libre\\n";
+                                archi<<porcentaje;
+                                archi<<"%";
+                                archi<<" del disco\"];"<<endl;
+                                contadorL++;
+                            }
                             apunta = auxiliar.part_next;
                             fseek(disco, apunta, SEEK_SET);
                             fread(&auxiliar, sizeof(Ebr), 1, disco);
                         }else{
+                            int espaciol=auxiliar.part_start+auxiliar.part_s;
+                            int finalL=aux.mbr_partition[i].part_start+aux.mbr_partition[i].part_s;
+                            if(finalL!=espaciol){
+                                archi<<"nodel"+to_string(contadorL)+"[label=\"";
+                                porcentaje = ((finalL-espacio)*100/aux.mbr_tamano);
+                                archi<<"Libre\\n";
+                                archi<<porcentaje;
+                                archi<<"%";
+                                archi<<" del disco\"];"<<endl;
+                                contadorL++;
+                            }
                             break;
                         }
                         
@@ -257,8 +290,19 @@ void rep::makerep(string localizar,string parti){
                     
                     archi<<"};"<<endl;
                 }
+                espacio=aux.mbr_partition[i].part_start+aux.mbr_partition[i].part_s;
                 contador++;
             }
+        }
+        int ultima =aux.mbr_tamano-espacio;
+        if(ultima!=0){
+            archi<<"node"+to_string(contador)+"[label=\"";
+            porcentaje = ((ultima)*100/aux.mbr_tamano);
+            archi<<"Libre\\n";
+            archi<<porcentaje;
+            archi<<"%";
+            archi<<" del disco\"];"<<endl;
+            contador++;
         }
         archi<<"rank=same{";
         for (int i = 0; i < contador-1; i++)
@@ -486,7 +530,7 @@ void rep::makerep(string localizar,string parti){
                 archi<<"bloque Carpeta "<<contador<<"\\n";
                 for (int i = 0; i < 4; i++)
                 {
-                   archi<<raiz.b_content[i].b_name<<"--"<<raiz.b_content[i].b_inodo<<"\\n";
+                   archi<<raiz.b_content[i].b_name<<" : "<<raiz.b_content[i].b_inodo<<"\\n";
                 }
                 
                 archi<<"\"];"<<endl;
@@ -545,8 +589,6 @@ void rep::makerep(string localizar,string parti){
         int fin = reporte.s_bm_block_start;
         char valor;
         int saltos=1;
-        cout<<pos<<endl;
-        cout<<fin<<endl;
         while(pos<fin){
             if(saltos ==20){
                 archi<<"\n";
@@ -554,7 +596,6 @@ void rep::makerep(string localizar,string parti){
             }
             fseek(disco, pos, SEEK_SET);
             fread(&valor,sizeof(char),1,disco);
-            cout<<int(valor)<<endl;
             if(valor==0){
                 archi<<'0';
             }else{
@@ -589,8 +630,6 @@ void rep::makerep(string localizar,string parti){
         int fin = reporte.s_inode_start;
         char valor;
         int saltos=1;
-        cout<<pos<<endl;
-        cout<<fin<<endl;
         while(pos<fin){
             if(saltos ==20){
                 archi<<"\n";
@@ -609,7 +648,7 @@ void rep::makerep(string localizar,string parti){
         
        
         archi.close();
-        cout<<"Reporte de bitmap de inodos creado"<<endl;
+        cout<<"Reporte de bitmap de bloques creado"<<endl;
     }else if(this->name=="tree"){
         ofstream archi;
         archi.open("Reportree.dot",ios::out);
@@ -673,7 +712,7 @@ void rep::makerep(string localizar,string parti){
         string cmd = "dot -Tjpg ./Reportree.dot -o "+this->path;
         cout<<cmd<<endl;
         system(cmd.c_str());
-        cout<<"Reporte de inodos creado"<<endl;
+        cout<<"Reporte de arbol creado"<<endl;
     }
 
 }

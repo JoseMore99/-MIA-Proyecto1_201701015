@@ -40,7 +40,7 @@ int ExisteCarArch(FILE *disco,TablaI raiz,char *token,SuperB reporte){
             if(carp.b_content[0].b_name[0]=='.'){//Es carpeta
                 for (int j = 1; j < 4; j++)
                 {
-                    if(carp.b_content[j].b_name==token){
+                    if(strcmp(carp.b_content[j].b_name,token)==0){
                         retorno=carp.b_content[j].b_inodo;
                         return retorno;
                     }
@@ -70,12 +70,12 @@ int PosInodo(FILE *disco,TablaI raiz,SuperB reporte){
             int pos = reporte.s_block_start+(raiz.i_block[i]*sizeof(BloqueArchivos));
             fseek(disco, pos, SEEK_SET);
             fread(&carp,sizeof(BloqueCarpetas),1,disco);
-            if(carp.b_content[0].b_name[0]=='.'){//Es carpeta
+            if(strcmp(carp.b_content[0].b_name,".")==0){//Es carpeta
                 for (int j = 1; j < 4; j++)
                 {
-                    cout<<j<<"."<<carp.b_content[j].b_name<<endl;
+                   // cout<<j<<"."<<carp.b_content[j].b_name<<endl;
                     if(strcmp(carp.b_content[j].b_name,"")==0){
-                        cout<<"entro :o"<<endl;
+                        //cout<<"entro :o"<<endl;
                         return i;
                     }
                 }
@@ -98,7 +98,7 @@ int PosBloque(FILE *disco,TablaI raiz,SuperB reporte){
             int pos = reporte.s_block_start+(raiz.i_block[i]*sizeof(BloqueArchivos));
             fseek(disco, pos, SEEK_SET);
             fread(&carp,sizeof(BloqueCarpetas),1,disco);
-            if(carp.b_content[0].b_name[0]=='.'){//Es carpeta
+            if(strcmp(carp.b_content[0].b_name,".")==0){//Es carpeta
                 for (int j = 1; j < 4; j++)
                 {
                    if(strcmp(carp.b_content[j].b_name,"")==0){
@@ -111,7 +111,30 @@ int PosBloque(FILE *disco,TablaI raiz,SuperB reporte){
     return retorno;
     
 }
-
+void Escribirbmb(FILE *disco,int numB,SuperB reporte){
+    fseek(disco, reporte.s_bm_block_start, SEEK_SET);
+    char unidad =1;
+    int contador =0;
+    while (contador<numB)
+    {
+       fread(&unidad,sizeof(char),1,disco);
+       contador++;
+    }
+    unidad =1;
+    fwrite(&unidad,sizeof(char),1,disco);
+}
+void Escribirbmi(FILE *disco,int numI,SuperB reporte){
+    fseek(disco, reporte.s_bm_inode_start, SEEK_SET);
+    char unidad =1;
+    int contador =0;
+    while (contador<numI)
+    {
+       fread(&unidad,sizeof(char),1,disco);
+       contador++;
+    }
+    unidad =1;
+    fwrite(&unidad,sizeof(char),1,disco);
+}
 mkfile::mkfile(){
     this->r=false;
     this->cont="";
@@ -148,12 +171,25 @@ void mkfile::makefile(mount montado){
         
         int comprobar = ExisteCarArch(disco,raiz,token,reporte);
         cout<<token<<endl;
+        cout<<comprobar<<endl;
         if(comprobar==-1){//no existe
+            if(EsCarpeta(token)&&!r){
+                cout<<"Directorio no disponible"<<endl;
+                return;
+            }
+            if(reporte.s_free_blocks_count<=0){
+                cout<<"no hay espacio para mas bloques!!"<<endl;
+                return;
+            }
+            if(reporte.s_free_inodes_count<=0){
+                cout<<"no hay espacio para mas inodos!!"<<endl;
+                return;
+            }
             //buscamos pocision en el bloque y de no haberla creamos un bloque 
             int inodoActual=PosInodo(disco,raiz,reporte);// Posicion del inodo al apuntador bloue bloque
             int bloqueActual=PosBloque(disco,raiz,reporte);//pocision del bloque con espacio libre
-            //cout<<inodoActual<<endl;
-           // cout<<bloqueActual<<endl;
+            cout<<inodoActual<<endl;
+            cout<<bloqueActual<<endl;
             string contenido=token;
             if(bloqueActual==-1){//si no hay un bloque disponible, se crea
                 BloqueCarpetas extender;
@@ -161,7 +197,7 @@ void mkfile::makefile(mount montado){
                 string Anterior="..";
                 string libre="";
                 
-                strcpy(extender.b_content[0].b_name,Actual.c_str());
+                strcpy(extender.b_content[0].b_name,Actual.c_str()); 
                 extender.b_content[0].b_inodo=0;
                 strcpy(extender.b_content[1].b_name,Anterior.c_str());
                 extender.b_content[1].b_inodo=0;
@@ -169,19 +205,22 @@ void mkfile::makefile(mount montado){
                 extender.b_content[2].b_inodo=0;
                 strcpy(extender.b_content[3].b_name,libre.c_str());
                 extender.b_content[3].b_inodo=0;
-                pos= reporte.s_block_start+(reporte.s_first_blo*sizeof(BloqueArchivos));
                 extender.b_content[2].b_inodo=reporte.s_first_ino;
-                fseek(disco, pos, SEEK_SET);
+                int postemp= reporte.s_block_start+(reporte.s_first_blo*sizeof(BloqueArchivos));
+                fseek(disco, postemp, SEEK_SET);
                 fwrite(&extender,sizeof(BloqueArchivos),1,disco);
+                Escribirbmb(disco,reporte.s_first_blo,reporte);
                 raiz.i_block[inodoActual]=reporte.s_first_blo;
                 reporte.s_first_blo++;
                 reporte.s_blocks_count++;
                 reporte.s_free_blocks_count--;
-
                 bloqueActual=2;
-                pos= reporte.s_inode_s+(NumeroInodo*sizeof(TablaI));
+                pos= reporte.s_inode_start+(NumeroInodo*sizeof(TablaI));
+                fseek(disco, pos, SEEK_SET);
+                fwrite(&raiz,sizeof(TablaI),1,disco);
             }else{//Si hay bloque disponible,solo se edita
                 BloqueCarpetas reescribir;
+                //cout<<"reescribiendo"<<endl;
                 pos= reporte.s_block_start+(raiz.i_block[inodoActual]*sizeof(BloqueArchivos));
                 fseek(disco, pos, SEEK_SET);
                 fread(&reescribir,sizeof(BloqueArchivos),1,disco);
@@ -192,6 +231,14 @@ void mkfile::makefile(mount montado){
             }
 
             //Creamos La carpeta o el archivo
+            if(reporte.s_free_blocks_count<=0){
+                cout<<"no hay espacio para mas bloques!!"<<endl;
+                return;
+            }
+            if(reporte.s_free_inodes_count<=0){
+                cout<<"no hay espacio para mas inodos!!"<<endl;
+                return;
+            }
             TablaI nuevoInodo;
             if(EsCarpeta(token)){
                 nuevoInodo.i_uid=1;
@@ -213,6 +260,8 @@ void mkfile::makefile(mount montado){
                 NumeroInodo=reporte.s_first_ino;
                 fseek(disco, pos, SEEK_SET);
                 fwrite(&nuevoInodo,sizeof(TablaI),1,disco);
+                Escribirbmi(disco,reporte.s_first_ino,reporte);
+
                 reporte.s_first_ino++;
                 reporte.s_inodes_count++;
                 reporte.s_free_inodes_count--;
@@ -233,6 +282,7 @@ void mkfile::makefile(mount montado){
                 int postemp= reporte.s_block_start+(reporte.s_first_blo*sizeof(BloqueArchivos));
                 fseek(disco, postemp, SEEK_SET);
                 fwrite(&nuevoBC,sizeof(BloqueArchivos),1,disco);
+                Escribirbmb(disco,reporte.s_first_blo,reporte);
                 reporte.s_first_blo++;
                 reporte.s_blocks_count++;
                 reporte.s_free_blocks_count--;
@@ -256,6 +306,8 @@ void mkfile::makefile(mount montado){
                 NumeroInodo=reporte.s_first_ino;
                 fseek(disco, pos, SEEK_SET);
                 fwrite(&nuevoInodo,sizeof(TablaI),1,disco);
+                Escribirbmi(disco,reporte.s_first_ino,reporte);
+
                 reporte.s_first_ino++;
                 reporte.s_inodes_count++;
                 reporte.s_free_inodes_count--;
@@ -282,6 +334,7 @@ void mkfile::makefile(mount montado){
                 int postemp= reporte.s_block_start+(reporte.s_first_blo*sizeof(BloqueArchivos));
                 fseek(disco, postemp, SEEK_SET);
                 fwrite(&nuevoBA,sizeof(BloqueArchivos),1,disco);
+                Escribirbmb(disco,reporte.s_first_blo,reporte);
                 reporte.s_first_blo++;
                 reporte.s_blocks_count++;
                 reporte.s_free_blocks_count--;
@@ -292,8 +345,6 @@ void mkfile::makefile(mount montado){
         token = strtok(NULL, delimitador);
     }
     fseek(disco, bul.part_start, SEEK_SET);
-    cout<<reporte.s_inodes_count<<endl;
-    cout<<reporte.s_blocks_count<<endl;
     fwrite(&reporte,sizeof(SuperB),1,disco);
     fclose(disco);
 }

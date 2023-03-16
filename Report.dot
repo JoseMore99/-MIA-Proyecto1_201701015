@@ -1,0 +1,77 @@
+digraph g {
+graph [];
+node [
+fontsize = "16"
+shape = "record"
+];
+edge [];
+ a0 [shape=none label=<<TABLE border="0">
+<TR><TD bgcolor="yellow">Reporte MBR</TD>
+<TD bgcolor="yellow"></TD></TR>
+<TR><TD>MBR tamanio</TD>
+<TD>
+7340032
+</TD></TR>
+<TR><TD>MBR Fecha Creacion</TD>
+<TD>
+Thu Mar 16 00:15:12 2023
+
+</TD></TR>
+<TR><TD>MBR signature</TD>
+<TD>
+383
+</TD></TR>
+<TR><TD bgcolor="yellow">Particion</TD>
+<TD bgcolor="yellow"></TD></TR>
+<TR><TD>status</TD>
+<TD>
+0
+</TD></TR>
+<TR><TD>type</TD>
+<TD>
+P
+</TD></TR>
+<TR><TD>fit</TD>
+<TD>
+W
+</TD></TR>
+<TR><TD>start</TD>
+<TD>
+136
+</TD></TR>
+<TR><TD>size</TD>
+<TD>
+3145728
+</TD></TR>
+<TR><TD>name</TD>
+<TD>
+Particion1
+</TD></TR>
+<TR><TD bgcolor="brown:violet">Particion Extendida</TD><TD bgcolor="brown:violet"></TD></TR><TR><TD bgcolor="violet">Particion Logica</TD>
+<TD bgcolor="violet"></TD></TR>
+<TR><TD>status</TD>
+<TD>
+0
+</TD></TR>
+<TR><TD>next</TD>
+<TD>
+-1
+</TD></TR>
+<TR><TD>fit</TD>
+<TD>
+B
+</TD></TR>
+<TR><TD>start</TD>
+<TD>
+3145864
+</TD></TR>
+<TR><TD>size</TD>
+<TD>
+1024
+</TD></TR>
+<TR><TD>name</TD>
+<TD>
+Parti5
+</TD></TR>
+ </TABLE>>];
+}
