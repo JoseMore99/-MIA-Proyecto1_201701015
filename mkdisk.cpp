@@ -65,10 +65,10 @@ void mkdisk::makedisk(){
         Pesokilo[j]=0;
     }
     int tam ;
-    if(this->unidad=='K'){
+    if(toupper(this->unidad)=='K'){
     tam = tamanio;
     }
-    else if(this->unidad=='M'){
+    else if(toupper(this->unidad)=='M'){
     tam = 1024* tamanio;
     }
 

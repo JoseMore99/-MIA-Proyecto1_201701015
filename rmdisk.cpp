@@ -20,9 +20,19 @@ rmdisk::rmdisk(){
 
 
 void rmdisk::removedisk(){
-    string limpiar ="rm -fr \""+this->ruta+"\"";
-    cout<<limpiar<<endl;
-    system(limpiar.c_str());
+    char i =0;
+    cout<<"Desea eliminar el archivo? S/N"<<endl;
+    cin.get(i);
+    cin.get(i);
+    if(toupper(i)=='S'){
+        string limpiar ="rm -fr \""+this->ruta+"\"";
+        cout<<limpiar<<endl;
+        system(limpiar.c_str());
+        cout<<"Eliminacion ejecutada"<<endl;
+    }else{
+        cout<<"Eliminacion cancelada"<<endl;
+    }
+    
 }
 
 #endif

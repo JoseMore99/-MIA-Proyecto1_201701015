@@ -102,7 +102,7 @@ int PocisionLibreBF(Partition lista [],int size, int sizembr){
 
 bool ExisteExtendida(Partition lista[]){
     for (int i = 0; i < 4; i++){
-        if(lista[i].part_type=='E')
+        if(toupper(lista[i].part_type)=='E')
             return true;
     }
     return false;
@@ -111,7 +111,7 @@ bool ExisteExtendida(Partition lista[]){
 Partition buscarExtendida(Partition lista[]){
     Partition buscador;
     for (int i = 0; i < 4; i++){
-        if(lista[i].part_type=='E')
+        if(toupper(lista[i].part_type)=='E')
             return lista[i];
     }
     return buscador;
@@ -146,7 +146,7 @@ void fdisk::makePrimaria(){
      
     fread(&aux, sizeof(Mbr), 1, disco);
     fclose(disco);
-    if (this->borrar=="full"){
+    if (strcasecmp(this->borrar.c_str(),"full")==0){
          cout<<"Eliminando una particion en: "<<path<<endl;
         string vaciar="";
         int seleccion = BuscarPartition(aux.mbr_partition,this->name);
@@ -164,20 +164,20 @@ void fdisk::makePrimaria(){
     cout<<"Haciendo una particion en: "<<path<<endl;
     Partition nueva;
     int size = this->tamanio;
-    if(this->unidad!='B'){
-        if(this->unidad=='K')
+     if(toupper(this->unidad)!='B'){
+        if(toupper(this->unidad)=='K')
             size = size *1024;
-        if(this->unidad=='M')
+        if(toupper(this->unidad)=='M')
             size = size *1024*1024;
     }
     int pos = -1;
-    if(aux.dsk_fit=='F'){
+    if(toupper(aux.dsk_fit)=='F'){
     pos = PocisionLibreFF(aux.mbr_partition,size,aux.mbr_tamano);
     }
-    if(aux.dsk_fit=='W'){
+    if(toupper(aux.dsk_fit)=='W'){
     pos = PocisionLibreWF(aux.mbr_partition,size,aux.mbr_tamano);
     }
-    if(aux.dsk_fit=='B'){
+    if(toupper(aux.dsk_fit)=='B'){
     pos = PocisionLibreBF(aux.mbr_partition,size,aux.mbr_tamano);
     }
     if(pos ==-1){
@@ -220,7 +220,7 @@ void fdisk::makeExtendida(){
         cout<<"Ya existe una particion extendida en este disco"<<endl;
         return;
     }
-    if (this->borrar=="full"){
+    if (strcasecmp(this->borrar.c_str(),"full")==0){
          cout<<"Eliminando una particion en: "<<path<<endl;
         string vaciar="";
         int seleccion = BuscarPartition(aux.mbr_partition,this->name);
@@ -238,20 +238,20 @@ void fdisk::makeExtendida(){
     cout<<"Haciendo una particion Extendida en: "<<path<<endl;
     Partition nueva;
     int size = this->tamanio;
-    if(this->unidad!='B'){
-        if(this->unidad=='K')
+    if(toupper(this->unidad)!='B'){
+        if(toupper(this->unidad)=='K')
             size = size *1024;
-        if(this->unidad=='M')
+        if(toupper(this->unidad)=='M')
             size = size *1024*1024;
     }
     int pos = -1;
-    if(aux.dsk_fit=='F'){
+    if(toupper(aux.dsk_fit)=='F'){
     pos = PocisionLibreFF(aux.mbr_partition,size,aux.mbr_tamano);
     }
-    if(aux.dsk_fit=='W'){
+    if(toupper(aux.dsk_fit)=='W'){
     pos = PocisionLibreWF(aux.mbr_partition,size,aux.mbr_tamano);
     }
-    if(aux.dsk_fit=='B'){
+    if(toupper(aux.dsk_fit)=='B'){
     pos = PocisionLibreBF(aux.mbr_partition,size,aux.mbr_tamano);
     }
     if(pos ==-1){
@@ -301,7 +301,7 @@ void fdisk::makeLogica(){
         return;
     }
     Partition Aqui = buscarExtendida(aux.mbr_partition);
-    if (this->borrar=="full"){
+    if (strcasecmp(this->borrar.c_str(),"full")==0){
          cout<<"Eliminando una particion en: "<<path<<endl;
         string vaciar="";
         int seleccion = BuscarPartition(aux.mbr_partition,this->name);
@@ -319,10 +319,10 @@ void fdisk::makeLogica(){
     cout<<"Haciendo una particion Logica en: "<<path<<endl;
     Ebr nueva;
     int size = this->tamanio;
-    if(this->unidad!='B'){
-        if(this->unidad=='K')
+    if(toupper(this->unidad)!='B'){
+        if(toupper(this->unidad)=='K')
             size = size *1024;
-        if(this->unidad=='M')
+        if(toupper(this->unidad)=='M')
             size = size *1024*1024;
     }
    

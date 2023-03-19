@@ -22,25 +22,25 @@ edge [];
 </TD></TR>
 <TR><TD>s_free_blocks_count</TD>
 <TD>
-30628
+20413
 </TD></TR>
 <TR><TD>s_free_inodes_count</TD>
 <TD>
-10203
+6798
 </TD></TR>
 <TR><TD>s_mtime</TD>
 <TD>
-Thu Mar 16 00:15:12 2023
+Sat Mar 18 19:35:01 2023
 
 </TD></TR>
 <TR><TD>s_umtime</TD>
 <TD>
-Thu Mar 16 00:15:12 2023
+Sat Mar 18 19:35:01 2023
 
 </TD></TR>
 <TR><TD>s_mnt_count</TD>
 <TD>
-1678947312
+5722160
 </TD></TR>
 <TR><TD>s_magic</TD>
 <TD>
@@ -72,11 +72,11 @@ Thu Mar 16 00:15:12 2023
 </TD></TR>
 <TR><TD>s_inode_start</TD>
 <TD>
-41068
+27448
 </TD></TR>
 <TR><TD>s_block_start</TD>
 <TD>
-1184924
+789944
 </TD></TR>
  </TABLE>>];
 }

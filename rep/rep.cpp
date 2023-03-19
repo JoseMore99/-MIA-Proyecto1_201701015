@@ -6,6 +6,28 @@
 #include "../estructuras.cpp"
 
 using namespace std;
+int ExisteFile(FILE *disco,TablaI raiz,char *token,SuperB reporte){
+    int retorno = -1;
+    for (int i = 0; i < 15; i++){
+        if(raiz.i_block[i]!=-1){
+            BloqueCarpetas carp;
+            int pos = reporte.s_block_start+(raiz.i_block[i]*sizeof(BloqueArchivos));
+            fseek(disco, pos, SEEK_SET);
+            fread(&carp,sizeof(BloqueCarpetas),1,disco);
+            if(carp.b_content[0].b_name[0]=='.'){//Es carpeta
+                for (int j = 1; j < 4; j++)
+                {
+                    if(strcmp(carp.b_content[j].b_name,token)==0){
+                        retorno=carp.b_content[j].b_inodo;
+                        return retorno;
+                    }
+                }
+            }
+        }
+    }
+    return retorno;
+    
+}
 
 string bloques;
 
@@ -59,7 +81,7 @@ rep::rep(){
 
 
 void rep::makerep(string localizar,string parti){
-    if(this->name=="mbr"){
+    if(strcasecmp(this->name.c_str(),"mbr")==0){
         ofstream archi;
         archi.open("Report.dot",ios::out);
         if(archi.fail()){
@@ -172,9 +194,10 @@ void rep::makerep(string localizar,string parti){
         archi.close();
         string cmd = "dot -Tjpg ./Report.dot -o "+this->path;
         cout<<cmd<<endl;
+        fclose(disco);
         system(cmd.c_str());
         cout<<"Reporte de particiones creado"<<endl;
-    }else if(this->name=="disk"){
+    }else if(strcasecmp(this->name.c_str(),"disk")==0){
         ofstream archi;
         archi.open("Reportd.dot",ios::out);
         if(archi.fail()){
@@ -266,7 +289,7 @@ void rep::makerep(string localizar,string parti){
                             int finalL=aux.mbr_partition[i].part_start+aux.mbr_partition[i].part_s;
                             if(finalL!=espaciol){
                                 archi<<"nodel"+to_string(contadorL)+"[label=\"";
-                                porcentaje = ((finalL-espacio)*100/aux.mbr_tamano);
+                                porcentaje = ((finalL-espaciol)*100/aux.mbr_tamano);
                                 archi<<"Libre\\n";
                                 archi<<porcentaje;
                                 archi<<"%";
@@ -323,9 +346,11 @@ void rep::makerep(string localizar,string parti){
         archi.close();
         string cmd = "dot -Tjpg ./Reportd.dot -o "+this->path;
         cout<<cmd<<endl;
+        fclose(disco);
+
         system(cmd.c_str());
         cout<<"Reporte de particiones creado"<<endl;
-    }else if(this->name=="sb"){
+    }else if(strcasecmp(this->name.c_str(),"sb")==0){
        ofstream archi;
         archi.open("Reportsb.dot",ios::out);
         if(archi.fail()){
@@ -426,9 +451,10 @@ void rep::makerep(string localizar,string parti){
         archi.close();
         string cmd = "dot -Tjpg ./Reportsb.dot -o "+this->path;
         cout<<cmd<<endl;
+        fclose(disco);
         system(cmd.c_str());
         cout<<"Reporte de Super Bloque creado"<<endl;
-    }else if(this->name=="inode"){
+    }else if(strcasecmp(this->name.c_str(),"inode")==0){
         ofstream archi;
         archi.open("Reportin.dot",ios::out);
         if(archi.fail()){
@@ -492,8 +518,9 @@ void rep::makerep(string localizar,string parti){
         string cmd = "dot -Tjpg ./Reportin.dot -o "+this->path;
         cout<<cmd<<endl;
         system(cmd.c_str());
+        fclose(disco);
         cout<<"Reporte de inodos creado"<<endl;
-    }else if(this->name=="block"){
+    }else if(strcasecmp(this->name.c_str(),"block")==0){
         ofstream archi;
         archi.open("Reportblo.dot",ios::out);
         if(archi.fail()){
@@ -567,7 +594,7 @@ void rep::makerep(string localizar,string parti){
         cout<<cmd<<endl;
         system(cmd.c_str());
         cout<<"Reporte de bloques creado"<<endl;
-    }else if(this->name=="bm_inode"){
+    }else if(strcasecmp(this->name.c_str(),"bm_inode")==0){
         ofstream archi;
         archi.open(this->path,ios::out);
         if(archi.fail()){
@@ -605,10 +632,10 @@ void rep::makerep(string localizar,string parti){
             saltos++;
         }
         
-       
+        fclose(disco);
         archi.close();
         cout<<"Reporte de bitmap de inodos creado"<<endl;
-    }else if(this->name=="bm_bloc"){
+    }else if(strcasecmp(this->name.c_str(),"bm_bloc")==0){
         ofstream archi;
         archi.open(this->path,ios::out);
         if(archi.fail()){
@@ -646,10 +673,10 @@ void rep::makerep(string localizar,string parti){
             saltos++;
         }
         
-       
+        fclose(disco);
         archi.close();
         cout<<"Reporte de bitmap de bloques creado"<<endl;
-    }else if(this->name=="tree"){
+    }else if(strcasecmp(this->name.c_str(),"tree")==0){
         ofstream archi;
         archi.open("Reportree.dot",ios::out);
         if(archi.fail()){
@@ -713,6 +740,67 @@ void rep::makerep(string localizar,string parti){
         cout<<cmd<<endl;
         system(cmd.c_str());
         cout<<"Reporte de arbol creado"<<endl;
+    }else if(strcasecmp(this->name.c_str(),"file")==0){
+        ofstream archi;
+        archi.open(this->path,ios::out);
+        if(archi.fail()){
+        cout<<"Ocurrio un error inesperado"<<endl;
+        return;
+        }
+        FILE *disco;
+        disco=fopen(localizar.c_str(),"rb+");
+        if(disco==NULL)
+            exit(1);
+        Mbr aux;
+        fread(&aux,sizeof(Mbr),1,disco);
+        int contador = 0;
+        Partition esesta= BuscarPar(aux.mbr_partition,parti);
+        fseek(disco, esesta.part_start, SEEK_SET);
+        SuperB reporte;
+        fread(&reporte,sizeof(SuperB),1,disco);
+        
+        char delimitador[] = "/";
+        string str = this->ruta;
+        char a[str.length()+1];
+        strcpy(a, str.c_str());
+        char * token = strtok(a,delimitador);
+        int NumeroInodo=0;
+        while (token != NULL){
+            TablaI raiz;
+            int pos = reporte.s_inode_start+(NumeroInodo*sizeof(TablaI));
+            fseek(disco, pos, SEEK_SET);
+            fread(&raiz,sizeof(TablaI),1,disco);
+             int comprobar = ExisteFile(disco,raiz,token,reporte);
+            cout<<token<<endl;
+            cout<<comprobar<<endl;
+            if(comprobar==-1){
+                return;
+            }else{
+                NumeroInodo=comprobar;
+            }
+
+            token = strtok(NULL, delimitador);
+        }
+        TablaI raiz;
+        int pos = reporte.s_inode_start+(NumeroInodo*sizeof(TablaI));
+        fseek(disco, pos, SEEK_SET);
+        fread(&raiz,sizeof(TablaI),1,disco);
+        if(raiz.i_type=='1'){
+            for (int i = 0; i < 15; i++){
+                if(raiz.i_block[i]!=-1){
+                    BloqueArchivos arch;
+                    int pos = reporte.s_block_start+(raiz.i_block[i]*sizeof(BloqueArchivos));
+                    fseek(disco, pos, SEEK_SET);
+                    fread(&arch,sizeof(BloqueArchivos),1,disco);
+                    archi<<arch.b_content;
+                }
+            }
+        }else{
+            cout<<"Error en la direccion"<<endl;
+        }
+        fclose(disco);
+        archi.close();
+        cout<<"Reporte de contenido de archivos creado"<<endl;
     }
 
 }

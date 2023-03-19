@@ -120,71 +120,71 @@ void LeerComando(char comando[]){
             vec=token;
     }
     //cout<<vec<<endl;
-    if (vec=="execute"){
+    if (strcasecmp(vec.c_str(),"execute")==0){
         token = strtok(NULL, delimitador);
         string aux = token;
         info compo = ObtenerValor(aux);
-        if(compo.nombre==">path"){
+        if(strcasecmp(compo.nombre.c_str(),">path")==0){
             if(compo.valor=="$")compo.valor=rutaAux;
             execute(compo.valor);
         }
-    }else if (vec=="rmdisk"){
+    }else if (strcasecmp(vec.c_str(),"rmdisk")==0){
         token = strtok(NULL, delimitador);
         string aux = token;
         rmdisk *actual=new rmdisk();
         info compo = ObtenerValor(aux);
-        if(compo.nombre==">path"){
+        if(strcasecmp(compo.nombre.c_str(),">path")==0){
             if(compo.valor=="$")compo.valor=rutaAux;
             actual->ruta=compo.valor;
         }
         actual->removedisk();
     }
-    else if (vec=="mkdisk"){
+    else if (strcasecmp(vec.c_str(),"mkdisk")==0){
         mkdisk *actual=new mkdisk();
         token = strtok(NULL, delimitador);
         while (token != NULL){
 
             string aux = token;
             info compo = ObtenerValor(aux);
-            if(compo.nombre==">path"){
+            if(strcasecmp(compo.nombre.c_str(),">path")==0){
                  if(compo.valor=="$")compo.valor=rutaAux;
 
                 actual->ruta = compo.valor;
-            }else  if(compo.nombre==">size"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">size")==0){
                 actual->tamanio = stoi(compo.valor);
-            }else  if(compo.nombre==">unit"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">unit")==0){
                 actual->unidad = compo.valor[0];
-            }else  if(compo.nombre==">fit"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">fit")==0){
                 actual->fit = compo.valor;
             }
             token = strtok(NULL, delimitador);
         }
         //actual->imprimir();
         actual->makedisk();
-    }else if (vec=="fdisk"){
+    }else if (strcasecmp(vec.c_str(),"fdisk")==0){
         fdisk *actual=new fdisk();
         token = strtok(NULL, delimitador);
         while (token != NULL){
 
             string aux = token;
             info compo = ObtenerValor(aux);
-            if(compo.nombre==">path"){
+            if(strcasecmp(compo.nombre.c_str(),">path")==0){
                  if(compo.valor=="$")compo.valor=rutaAux;
 
                 actual->ruta = compo.valor;
-            }else  if(compo.nombre==">size"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">size")==0){
                 actual->tamanio = stoi(compo.valor);
-            }else  if(compo.nombre==">unit"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">unit")==0){
                 actual->unidad = compo.valor[0];
-            }else  if(compo.nombre==">fit"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">fit")==0){
                 actual->fit = compo.valor;
-            }else  if(compo.nombre==">name"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">name")==0){
                 actual->name = compo.valor;
-            }else  if(compo.nombre==">type"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">type")==0){
                 actual->type = compo.valor[0];
-            }else  if(compo.nombre==">delete"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">delete")==0){
                 actual->borrar = compo.valor;
-            }else  if(compo.nombre==">add"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">add")==0){
                 actual->add = stoi(compo.valor);
             }
             token = strtok(NULL, delimitador);
@@ -199,18 +199,18 @@ void LeerComando(char comando[]){
         }else{
             cout<<"ERROR: Tipo de Particion desconocida!"<<endl;
         }
-    }else if (vec=="mount"){
+    }else if (strcasecmp(vec.c_str(),"mount")==0){
         mount *actual=new mount();
         token = strtok(NULL, delimitador);
         while (token != NULL){
 
             string aux = token;
             info compo = ObtenerValor(aux);
-            if(compo.nombre==">path"){
+            if(strcasecmp(compo.nombre.c_str(),">path")==0){
                  if(compo.valor=="$")compo.valor=rutaAux;
 
                 actual->path = compo.valor;
-            }else  if(compo.nombre==">name"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">name")==0){
                 actual->name = compo.valor;
             }
             token = strtok(NULL, delimitador);
@@ -229,17 +229,17 @@ void LeerComando(char comando[]){
             cout<<"La particion que se quiere montar no existe"<<endl;
         }
         
-    }else if (vec=="mkfs"){
+    }else if (strcasecmp(vec.c_str(),"mkfs")==0){
         mkfs *actual=new mkfs();
         token = strtok(NULL, delimitador);
         while (token != NULL){
             string aux = token;
             info compo = ObtenerValor(aux);
-            if(compo.nombre==">id"){
+            if(strcasecmp(compo.nombre.c_str(),">id")==0){
                 actual->id = compo.valor;
-            }else  if(compo.nombre==">type"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">type")==0){
                 actual->type = compo.valor;
-            }else  if(compo.nombre==">fs"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">fs")==0){
                 actual->fs = compo.valor;
             }
             token = strtok(NULL, delimitador);
@@ -258,22 +258,22 @@ void LeerComando(char comando[]){
             cout<<"Particion no montada o inexistente!"<<endl;
         }
        
-    }else if (vec=="rep"){
+    }else if (strcasecmp(vec.c_str(),"rep")==0){
         rep *actual=new rep();
         token = strtok(NULL, delimitador);
         while (token != NULL){
 
             string aux = token;
             info compo = ObtenerValor(aux);
-            if(compo.nombre==">path"){
+            if(strcasecmp(compo.nombre.c_str(),">path")==0){
                  if(compo.valor=="$")compo.valor=rutaAux;
 
                 actual->path = compo.valor;
-            }else  if(compo.nombre==">name"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">name")==0){
                 actual->name = compo.valor;
-            }else  if(compo.nombre==">ruta"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">ruta")==0){
                 actual->ruta = compo.valor;
-            }else  if(compo.nombre==">id"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">id")==0){
                 actual->id = compo.valor;
             }
             token = strtok(NULL, delimitador);
@@ -286,17 +286,17 @@ void LeerComando(char comando[]){
                 }
                 
         }
-    }else if(vec=="login"){
+    }else if(strcasecmp(vec.c_str(),"login")==0){
         login *actual=new login();
         token = strtok(NULL, delimitador);
         while (token != NULL){
             string aux = token;
             info compo = ObtenerValor(aux);
-            if(compo.nombre==">user"){
+            if(strcasecmp(compo.nombre.c_str(),">user")==0){
                 actual->user = compo.valor;
-            }else  if(compo.nombre==">pass"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">pass")==0){
                 actual->pass = compo.valor;
-            }else  if(compo.nombre==">id"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">id")==0){
                 actual->id = compo.valor;
             }
             token = strtok(NULL, delimitador);
@@ -318,20 +318,20 @@ void LeerComando(char comando[]){
             cout<<"Particion no montada o inexistente!"<<endl;
         }
 
-    }else if(vec=="mkfile"){
+    }else if(strcasecmp(vec.c_str(),"mkfile")==0){
         mkfile *actual=new mkfile();
         token = strtok(NULL, delimitador);
         while (token != NULL){
             string aux = token;
             info compo = ObtenerValor(aux);
-            if(compo.nombre==">path"){
+            if(strcasecmp(compo.nombre.c_str(),">path")==0){
                 if(compo.valor=="$")compo.valor=rutaAux;
                 actual->path=compo.valor;
-            }else  if(compo.nombre==">r"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">r")==0){
                 actual->r =true;
-            }else  if(compo.nombre==">size"){
+            }else  if(strcasecmp(compo.nombre.c_str(),">size")==0){
                 actual->size = stoi(compo.valor);
-            }else if(compo.nombre==">cont"){
+            }else if(strcasecmp(compo.nombre.c_str(),">cont")==0){
                 if(compo.valor=="$")compo.valor=rutaAux;
                 actual->cont=compo.valor;
             }
@@ -352,11 +352,46 @@ void LeerComando(char comando[]){
                 cout<<"Particion no montada o inexistente!"<<endl;
             }
         }
-    }else if(vec=="pause"){
+    }else if(strcasecmp(vec.c_str(),"pause")==0){
         cout<<"Presione enter para continuar...";
         cin.get();
         cin.get();
         cout<<"Programa reanudado\n";
+    }else if(strcasecmp(vec.c_str(),"mkdir")==0){
+        mkfile *actual=new mkfile();
+        actual->r=true;
+        token = strtok(NULL, delimitador);
+        while (token != NULL){
+            string aux = token;
+            info compo = ObtenerValor(aux);
+            if(strcasecmp(compo.nombre.c_str(),">path")==0){
+                if(compo.valor=="$")compo.valor=rutaAux;
+                actual->path=compo.valor;
+            }else  if(strcasecmp(compo.nombre.c_str(),">r")==0){
+                actual->r =true;
+            }else  if(strcasecmp(compo.nombre.c_str(),">size")==0){
+                actual->size = stoi(compo.valor);
+            }else if(strcasecmp(compo.nombre.c_str(),">cont")==0){
+                if(compo.valor=="$")compo.valor=rutaAux;
+                actual->cont=compo.valor;
+            }
+            token = strtok(NULL, delimitador);
+        }
+        if(logeado->id==""){
+            cout<<"Error: No hay usuario logeado, Realizar login"<<endl;
+        }else{
+            bool error = true;
+            for (mount item : montados) {
+                    if(item.id==logeado->id){
+                        actual->makefile(item);
+                        error = false;
+                        break;
+                    }
+            }
+            if(error){
+                cout<<"Particion no montada o inexistente!"<<endl;
+            }
+        }
     }
 }
 
@@ -380,6 +415,6 @@ int main()
         //LLamamos a la funcion para leer comandos
         LeerComando(rEx);
      } while(bucle);
-    //execute >path=./exec.eea
+    //ExeCute >path=./exec.eea
     return 0;
 }
