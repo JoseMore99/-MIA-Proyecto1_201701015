@@ -11,7 +11,9 @@ node4[label="bloque Carpeta 4\n. : 0\n.. : 0\na1.txt : 5\n : 0\n"];
 node5[label="bloque Archivo 5\n012345678912345\n"];
 node6[label="bloque Carpeta 6\n. : 0\n.. : 0\na2.txt : 7\n : 0\n"];
 node7[label="bloque Archivo 7\n012345678912345\n"];
-node8[label="bloque Carpeta 8\n. : 0\n.. : 0\nhome3 : 8\n : 0\n"];
+node8[label="bloque Carpeta 8\n. : 0\n.. : 0\nhome3 : 8\nhome2 : 10\n"];
 node9[label="bloque Carpeta 9\n. : 0\n.. : 0\na3.txt : 9\n : 0\n"];
-rank=same{node0->node1->node2->node3->node4->node5->node6->node7->node8->node9}
+node10[label="bloque Archivo 10\n012345678912345\n"];
+node11[label="bloque Carpeta 11\n. : 0\n.. : 0\na5 : 11\n : 0\n"];
+rank=same{node0->node1->node2->node3->node4->node5->node6->node7->node8->node9->node10->node11}
 }

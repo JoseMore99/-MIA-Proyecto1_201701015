@@ -111,7 +111,7 @@ bool ExisteExtendida(Partition lista[]){
 Partition buscarExtendida(Partition lista[]){
     Partition buscador;
     for (int i = 0; i < 4; i++){
-        if(toupper(lista[i].part_type)=='E')
+        if(toupper(lista[i].part_type)=='E' && !(strcmp(lista[i].part_name,"")==0))
             return lista[i];
     }
     return buscador;
@@ -234,6 +234,25 @@ void fdisk::makeExtendida(){
         fclose(disco);
         return;
     }
+    if (this->add!=0){
+        int size = this->add;
+        if(toupper(this->unidad)!='B'){
+            if(toupper(this->unidad)=='K')
+                size = size *1024;
+            if(toupper(this->unidad)=='M')
+                size = size *1024*1024;
+        }
+        cout<<"Eliminando una particion en: "<<path<<endl;
+        string vaciar="";
+        int seleccion = BuscarPartition(aux.mbr_partition,this->name);
+        Partition agregando;
+        int espacion = agregando.part_start+agregando.part_s+size;
+        disco=fopen(path.c_str(),"rb+");
+        fseek(disco, 0, SEEK_SET);
+        fwrite(&aux,sizeof(Mbr),1,disco);
+        fclose(disco);
+        return;
+    }
     //printf("Tamanio: %i  fecha: %s id: %i \n", aux.mbr_tamano, ctime(&aux.mbr_fecha_creacion), aux.mbr_signature);
     cout<<"Haciendo una particion Extendida en: "<<path<<endl;
     Partition nueva;
@@ -302,20 +321,36 @@ void fdisk::makeLogica(){
     }
     Partition Aqui = buscarExtendida(aux.mbr_partition);
     if (strcasecmp(this->borrar.c_str(),"full")==0){
-         cout<<"Eliminando una particion en: "<<path<<endl;
-        string vaciar="";
-        int seleccion = BuscarPartition(aux.mbr_partition,this->name);
-        strcpy(aux.mbr_partition[seleccion].part_name,vaciar.c_str());
-        for(Partition x: aux.mbr_partition){
-        cout<<x.part_name<<" pp "<<x.part_s<<endl;
+        int apunta =Aqui.part_start;
+        Ebr auxiliar;
+        
+        fseek(disco, apunta, SEEK_SET);
+        fread(&auxiliar, sizeof(Ebr), 1, disco);
+        
+        while(auxiliar.part_next!=-1){
+           // cout<<auxiliar.part_name<<"--"<<this->name<<endl;
+            if(strcmp(auxiliar.part_name,this->name.c_str())==0){
+                strcpy(auxiliar.part_name, "");
+                fseek(disco, apunta, SEEK_SET);
+                fwrite(&auxiliar, sizeof(Ebr), 1, disco);
+                return;
+            }
+            apunta = auxiliar.part_next;
+            fseek(disco, apunta, SEEK_SET);
+            fread(&auxiliar, sizeof(Ebr), 1, disco);
         }
-        disco=fopen(path.c_str(),"rb+");
-        fseek(disco, 0, SEEK_SET);
-        fwrite(&aux,sizeof(Mbr),1,disco);
+        //cout<<auxiliar.part_name<<"--"<<this->name<<endl;
+        if(strcmp(auxiliar.part_name,this->name.c_str())==0){
+            strcpy(auxiliar.part_name, "");
+            fseek(disco, auxiliar.part_start, SEEK_SET);
+            fwrite(&auxiliar, sizeof(Ebr), 1, disco);
+            fclose(disco);
+            return;
+        }
         fclose(disco);
         return;
     }
-    //printf("Tamanio: %i  fecha: %s id: %i \n", aux.mbr_tamano, ctime(&aux.mbr_fecha_creacion), aux.mbr_signature);
+        //printf("Tamanio: %i  fecha: %s id: %i \n", aux.mbr_tamano, ctime(&aux.mbr_fecha_creacion), aux.mbr_signature);
     cout<<"Haciendo una particion Logica en: "<<path<<endl;
     Ebr nueva;
     int size = this->tamanio;

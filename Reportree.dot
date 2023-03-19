@@ -1,87 +1,103 @@
 digraph G {
  label="./reporte8.jpg"
 node [shape=box fillcolor="aquamarine" style="filled"]
-nodeI0[label="inodo 0\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI0[label="inodo 0\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:0\ni_block[1]:8\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
 nodeI0-> nodeB0
 nodeI0-> nodeB8
 nodeB0[label="bloque Carpeta 0\n. : 0\n.. : 0\nusers.txt : 1\nhome : 2\n"];
 nodeB0-> nodeI1;
 nodeB0-> nodeI2;
-nodeB8[label="bloque Carpeta 8\n. : 0\n.. : 0\nhome3 : 8\n : 0\n"];
+nodeB8[label="bloque Carpeta 8\n. : 0\n.. : 0\nhome3 : 8\nhome2 : 10\n"];
 nodeB8-> nodeI8;
+nodeB8-> nodeI10;
 
-nodeI1[label="inodo 1\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI1[label="inodo 1\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:1\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:1\ni_perm:664"];
 nodeI1-> nodeB1
 nodeB1[label="bloque Archivo 1\n1, G, root
 1,U, root, root, 123
 \n"];
 
-nodeI2[label="inodo 2\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI2[label="inodo 2\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:2\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
 nodeI2-> nodeB2
 nodeB2[label="bloque Carpeta 2\n. : 0\n.. : 0\nuser : 3\nuser2 : 6\n"];
 nodeB2-> nodeI3;
 nodeB2-> nodeI6;
 
-nodeI3[label="inodo 3\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI3[label="inodo 3\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:3\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
 nodeI3-> nodeB3
 nodeB3[label="bloque Carpeta 3\n. : 0\n.. : 0\ndocs : 4\n : 0\n"];
 nodeB3-> nodeI4;
 
-nodeI4[label="inodo 4\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI4[label="inodo 4\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:4\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
 nodeI4-> nodeB4
 nodeB4[label="bloque Carpeta 4\n. : 0\n.. : 0\na1.txt : 5\n : 0\n"];
 nodeB4-> nodeI5;
 
-nodeI5[label="inodo 5\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI5[label="inodo 5\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:5\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:1\ni_perm:664"];
 nodeI5-> nodeB5
 nodeB5[label="bloque Archivo 5\n012345678912345\n"];
 
-nodeI6[label="inodo 6\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI6[label="inodo 6\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:6\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
 nodeI6-> nodeB6
 nodeB6[label="bloque Carpeta 6\n. : 0\n.. : 0\na2.txt : 7\n : 0\n"];
 nodeB6-> nodeI7;
 
-nodeI7[label="inodo 7\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI7[label="inodo 7\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:7\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:1\ni_perm:664"];
 nodeI7-> nodeB7
 nodeB7[label="bloque Archivo 7\n012345678912345\n"];
 
-nodeI8[label="inodo 8\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI8[label="inodo 8\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:9\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
 nodeI8-> nodeB9
 nodeB9[label="bloque Carpeta 9\n. : 0\n.. : 0\na3.txt : 9\n : 0\n"];
 nodeB9-> nodeI9;
 
-nodeI9[label="inodo 9\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 19:35:01 2023
-i_ctime:Sat Mar 18 19:35:01 2023
-i_mtime:Sat Mar 18 19:35:01 2023
+nodeI9[label="inodo 9\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
 i_block[0]:10\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:1\ni_perm:664"];
 nodeI9-> nodeB10
 nodeB10[label="bloque Archivo 10\n012345678912345\n"];
+
+nodeI10[label="inodo 10\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
+i_block[0]:11\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
+nodeI10-> nodeB11
+nodeB11[label="bloque Carpeta 11\n. : 0\n.. : 0\na5 : 11\n : 0\n"];
+nodeB11-> nodeI11;
+
+nodeI11[label="inodo 11\ni_uid:1\ni_s:64\ni_atime:Sat Mar 18 21:13:30 2023
+i_ctime:Sat Mar 18 21:13:30 2023
+i_mtime:Sat Mar 18 21:13:30 2023
+i_block[0]:12\ni_block[1]:-1\ni_block[2]:-1\ni_block[3]:-1\ni_block[4]:-1\ni_block[5]:-1\ni_block[6]:-1\ni_block[7]:-1\ni_block[8]:-1\ni_block[9]:-1\ni_block[10]:-1\ni_block[11]:-1\ni_block[12]:-1\ni_block[13]:-1\ni_block[14]:-1\ni_type:0\ni_perm:664"];
+nodeI11-> nodeB12
+nodeB12[label="bloque Carpeta 12\n. : 0\n.. : 0\n : 0\n : 0\n"];
 
 }

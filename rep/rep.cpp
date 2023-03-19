@@ -149,6 +149,17 @@ void rep::makerep(string localizar,string parti){
                     fseek(disco, apunta, SEEK_SET);
                     fread(&auxiliar, sizeof(Ebr), 1, disco);
                     while(true){
+                        cout<<auxiliar.part_name<<endl;
+                        if(strcmp(auxiliar.part_name,"")==0){
+                            if(auxiliar.part_next!=-1){
+                                apunta = auxiliar.part_next;
+                                fseek(disco, apunta, SEEK_SET);
+                                fread(&auxiliar, sizeof(Ebr), 1, disco);
+                                continue;
+                            }else{
+                                break;
+                            }
+                        }
                         archi<<"<TR><TD bgcolor=\"violet\">Particion Logica</TD>"<<endl;
                         archi<<"<TD bgcolor=\"violet\"></TD></TR>"<<endl;
                          archi<<"<TR><TD>status</TD>"<<endl;
@@ -259,6 +270,41 @@ void rep::makerep(string localizar,string parti){
                     archi<<"\"style=\"filled\""<<endl;
                     archi<<"node [shape=box fillcolor=\"green\" style=\"filled\" ]"<<endl;
                     while(true){
+                        if(strcmp(auxiliar.part_name,"")==0){
+                            if(auxiliar.part_next!=-1){
+                                archi<<"nodel"+to_string(contadorL)+"[label=\"";
+                                porcentaje = (auxiliar.part_s*100/aux.mbr_tamano);
+                                archi<<"Libre\\n";
+                                archi<<porcentaje;
+                                archi<<"%";
+                                archi<<" del disco\"];"<<endl;
+                                contadorL++;
+                                apunta = auxiliar.part_next;
+                                fseek(disco, apunta, SEEK_SET);
+                                fread(&auxiliar, sizeof(Ebr), 1, disco);
+                                continue;
+                            }else{
+                                archi<<"nodel"+to_string(contadorL)+"[label=\"";
+                                porcentaje = (auxiliar.part_s*100/aux.mbr_tamano);
+                                archi<<"Libre\\n";
+                                archi<<porcentaje;
+                                archi<<"%";
+                                archi<<" del disco\"];"<<endl;
+                                contadorL++;
+                                int espaciol=auxiliar.part_start+auxiliar.part_s;
+                                int finalL=aux.mbr_partition[i].part_start+aux.mbr_partition[i].part_s;
+                                if(finalL!=espaciol){
+                                    archi<<"nodel"+to_string(contadorL)+"[label=\"";
+                                    porcentaje = ((finalL-espaciol)*100/aux.mbr_tamano);
+                                    archi<<"Libre\\n";
+                                    archi<<porcentaje;
+                                    archi<<"%";
+                                    archi<<" del disco\"];"<<endl;
+                                    contadorL++;
+                                }
+                                break;
+                            }
+                        }
                         archi<<"nodel"+to_string(contadorL)+"[label=\"";
                         archi<<"Ebr";
                         archi<<"\"];"<<endl;

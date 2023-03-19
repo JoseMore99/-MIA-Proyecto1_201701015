@@ -127,6 +127,8 @@ void LeerComando(char comando[]){
         if(strcasecmp(compo.nombre.c_str(),">path")==0){
             if(compo.valor=="$")compo.valor=rutaAux;
             execute(compo.valor);
+        }else{
+            cout<<"Error: parametro incorrecto"<<endl;
         }
     }else if (strcasecmp(vec.c_str(),"rmdisk")==0){
         token = strtok(NULL, delimitador);
@@ -136,6 +138,8 @@ void LeerComando(char comando[]){
         if(strcasecmp(compo.nombre.c_str(),">path")==0){
             if(compo.valor=="$")compo.valor=rutaAux;
             actual->ruta=compo.valor;
+        }else{
+            cout<<"Error: parametro incorrecto"<<endl;
         }
         actual->removedisk();
     }
@@ -156,6 +160,8 @@ void LeerComando(char comando[]){
                 actual->unidad = compo.valor[0];
             }else  if(strcasecmp(compo.nombre.c_str(),">fit")==0){
                 actual->fit = compo.valor;
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }
@@ -186,15 +192,17 @@ void LeerComando(char comando[]){
                 actual->borrar = compo.valor;
             }else  if(strcasecmp(compo.nombre.c_str(),">add")==0){
                 actual->add = stoi(compo.valor);
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }
         //actual->imprimir();
-        if(actual->type=='P'){
+        if(toupper(actual->type)=='P'){
             actual->makePrimaria();
-        }else if (actual->type=='E'){
+        }else if (toupper(actual->type)=='E'){
             actual->makeExtendida();
-        }else if(actual->type=='L'){
+        }else if(toupper(actual->type)=='L'){
             actual->makeLogica();
         }else{
             cout<<"ERROR: Tipo de Particion desconocida!"<<endl;
@@ -212,6 +220,8 @@ void LeerComando(char comando[]){
                 actual->path = compo.valor;
             }else  if(strcasecmp(compo.nombre.c_str(),">name")==0){
                 actual->name = compo.valor;
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }
@@ -241,6 +251,8 @@ void LeerComando(char comando[]){
                 actual->type = compo.valor;
             }else  if(strcasecmp(compo.nombre.c_str(),">fs")==0){
                 actual->fs = compo.valor;
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }
@@ -275,6 +287,8 @@ void LeerComando(char comando[]){
                 actual->ruta = compo.valor;
             }else  if(strcasecmp(compo.nombre.c_str(),">id")==0){
                 actual->id = compo.valor;
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }
@@ -298,6 +312,8 @@ void LeerComando(char comando[]){
                 actual->pass = compo.valor;
             }else  if(strcasecmp(compo.nombre.c_str(),">id")==0){
                 actual->id = compo.valor;
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }
@@ -334,6 +350,8 @@ void LeerComando(char comando[]){
             }else if(strcasecmp(compo.nombre.c_str(),">cont")==0){
                 if(compo.valor=="$")compo.valor=rutaAux;
                 actual->cont=compo.valor;
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }
@@ -369,11 +387,8 @@ void LeerComando(char comando[]){
                 actual->path=compo.valor;
             }else  if(strcasecmp(compo.nombre.c_str(),">r")==0){
                 actual->r =true;
-            }else  if(strcasecmp(compo.nombre.c_str(),">size")==0){
-                actual->size = stoi(compo.valor);
-            }else if(strcasecmp(compo.nombre.c_str(),">cont")==0){
-                if(compo.valor=="$")compo.valor=rutaAux;
-                actual->cont=compo.valor;
+            }else{
+            cout<<"Error: parametro incorrecto"<<endl;
             }
             token = strtok(NULL, delimitador);
         }

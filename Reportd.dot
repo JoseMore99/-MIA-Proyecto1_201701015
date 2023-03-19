@@ -8,8 +8,9 @@ subgraph cluster2 {fillcolor="cyan" label="Logicas"style="filled"
 node [shape=box fillcolor="green" style="filled" ]
 nodel0[label="Ebr"];
 nodel1[label="Logica\n14% del disco"];
-nodel2[label="Libre\n14% del disco"];
-rank=same{nodel0->nodel1->nodel2}
+nodel2[label="Libre\n6% del disco"];
+nodel3[label="Libre\n7% del disco"];
+rank=same{nodel0->nodel1->nodel2->nodel3}
 };
 node3[label="Libre\n42% del disco"];
 rank=same{node0->node1->node2->node3}

@@ -14,33 +14,33 @@ edge [];
 </TD></TR>
 <TR><TD>s_inodes_count</TD>
 <TD>
-10
+12
 </TD></TR>
 <TR><TD>s_blocks_count</TD>
 <TD>
-11
+13
 </TD></TR>
 <TR><TD>s_free_blocks_count</TD>
 <TD>
-20413
+20411
 </TD></TR>
 <TR><TD>s_free_inodes_count</TD>
 <TD>
-6798
+6796
 </TD></TR>
 <TR><TD>s_mtime</TD>
 <TD>
-Sat Mar 18 19:35:01 2023
+Sat Mar 18 21:13:30 2023
 
 </TD></TR>
 <TR><TD>s_umtime</TD>
 <TD>
-Sat Mar 18 19:35:01 2023
+Sat Mar 18 21:13:30 2023
 
 </TD></TR>
 <TR><TD>s_mnt_count</TD>
 <TD>
-5722160
+33188
 </TD></TR>
 <TR><TD>s_magic</TD>
 <TD>
@@ -56,11 +56,11 @@ Sat Mar 18 19:35:01 2023
 </TD></TR>
 <TR><TD>s_firts_ino</TD>
 <TD>
-10
+12
 </TD></TR>
 <TR><TD>s_first_blo</TD>
 <TD>
-11
+13
 </TD></TR>
 <TR><TD>s_bm_inode_start</TD>
 <TD>
